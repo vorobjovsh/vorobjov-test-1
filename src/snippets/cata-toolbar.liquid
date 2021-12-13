@@ -1,0 +1,36 @@
+<div class="cata-toolbar">
+  <div class="group-toolbar">
+
+    <div class="cata-title"><h1>{{ collection.title }}</h1></div>
+    
+    {% if collection.all_tags.size > 0 %}
+      {% unless section.settings.sb_filters_position == 'none' %}
+
+        {% if section.settings.sb_filters_position == 'body' %}
+          <div class="filter-icon {{ section.settings.body_filters_style }}"><i class="demo-icon icon-sliders"></i>{{ 'collections.general.filter' | t }}</div>
+        {% else %}
+          <div class="filter-icon mobile-filter-icon drawer d-lg-none"><i class="demo-icon icon-sliders"></i>{{ 'collections.general.filter' | t }}</div>
+        {% endif %}
+
+      {% endunless %}
+    {% endif %}    
+    
+    {% if section.settings.show_col_gl %}
+      <div class="grid-list">
+        <span class="text">{{ 'collections.general.view_mode_text' | t }}</span>
+        {% if settings.general_placement == 'wide-padding' %}
+        <span class="grid grid-5{% if section.settings.mode_view_default == 'cata-grid-5' %} active{% endif %}" title="{{ 'collections.general.view_mode_tiny' | t }}" data-grid="grid-5"><i class="demo-icon icon-grid-5"></i></span>
+        {% endif %}
+        <span class="grid grid-4{% if _mode_view == 'cata-grid-4' %} active{% endif %}" title="{{ 'collections.general.view_mode_small' | t }}" data-grid="grid-4"><i class="demo-icon icon-grid-4"></i></span>
+        <span class="grid grid-3{% if _mode_view == 'cata-grid-3' %} active{% endif %}" title="{{ 'collections.general.view_mode_medium' | t }}" data-grid="grid-3"><i class="demo-icon icon-grid-3"></i></span>
+        <span class="grid grid-2{% if _mode_view == 'cata-grid-2' %} active{% endif %}" title="{{ 'collections.general.view_mode_large' | t }}" data-grid="grid-2"><i class="demo-icon icon-grid-2"></i></span>
+        <span class="grid grid-2-v2{% if _mode_view == 'cata-grid-2-v2' %} active{% endif %}" title="{{ 'collections.general.view_mode_large' | t }}" data-grid="grid-2-v2"><i class="demo-icon icon-grid-2-mode"></i></span>
+        <span class="grid grid-1{% if _mode_view == 'cata-grid-1' %} active{% endif %}" title="{{ 'collections.general.view_mode_huge' | t }}" data-grid="grid-1"><i class="demo-icon icon-grid-1"></i></span>
+        <span class="grid grid-1-v2{% if _mode_view == 'cata-grid-1-v2' %} active{% endif %}" title="{{ 'collections.general.view_mode_huge' | t }}" data-grid="grid-1-v2"><i class="demo-icon icon-grid-1-mode"></i></span>
+      </div>
+    {% endif %}
+    
+    {% include 'collection-sorting' %}
+    
+  </div>
+</div>

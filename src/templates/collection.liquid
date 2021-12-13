@@ -1,0 +1,9 @@
+{% comment %}
+  The contents of the collection.liquid template can be found in /sections/collection-template.liquid
+{% endcomment %}
+
+{% section 'collection-template' %}
+
+{% if settings.ss_instagram_subpage %}{% section 'section-instagram' %}{% endif %}
+{% if settings.ss_newsletter_subpage %}{% section 'section-newsletter' %}{% endif %}
+{% if settings.ss_logo_list_subpage %}{% section 'section-partner' %}{% endif %}

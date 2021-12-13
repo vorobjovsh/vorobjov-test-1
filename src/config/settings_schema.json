@@ -1,0 +1,176 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Skeleton theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Shopify",
+    "theme_documentation_url": "https:\/\/github.com\/Shopify\/skeleton-theme",
+    "theme_support_url": "https:\/\/github.com\/Shopify\/skeleton-theme\/issues"
+  },
+  {
+    "name": "Application Integration",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Search Box"
+      },
+      {
+        "type": "select",
+        "id": "show_search",
+        "label": "Show Search Box",
+        "default": "header",
+        "options": [
+          {
+            "value": "header",
+            "label": "Header"
+          },
+          {
+            "value": "slideshow",
+            "label": "Slideshow"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "ajax_search",
+        "label": "Auto Suggestion Search by",
+        "default": "default-theme",
+        "options": [
+          {
+            "value": "default-theme",
+            "label": "Default"
+          },
+          {
+            "value": "smart",
+            "label": "Smart Search app"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": "If you select Smart Search app, please [Register Here](http:\/\/www.searchanise.com\/get\/arenacommerce)"
+      },
+      {
+        "type": "select",
+        "id": "search_alignment",
+        "label": "Alignment",
+        "default": "right",
+        "options": [
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "search_border_radius",
+        "label": "Border radius"
+      }
+    ]
+  },
+  {
+    "name": "Icon",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon"
+      },
+      {
+        "type": "header",
+        "content": "Loading icon"
+      },
+      {
+        "type": "image",
+        "id": "loading.gif"
+      },
+      {
+        "type": "header",
+        "content": "GENERAL ICON SETTINGS",
+        "info": "Search icon, cart icon, etc..."
+      },
+      {
+        "type": "header",
+        "content": "Search icon"
+      },
+      {
+        "type": "select",
+        "id": "search_icon_type",
+        "label": "Icon type",
+        "options": [
+          {
+            "value": "font-icon",
+            "label": "Font icon"
+          },
+          {
+            "value": "image",
+            "label": "Image"
+          }
+        ],
+        "default": "font-icon"
+      },
+      {
+        "type": "text",
+        "id": "search_font_icon",
+        "label": "Font icon name",
+        "default": "icon-search-3",
+        "info": "Default is icon-search-3"
+      },
+      {
+        "type": "image_picker",
+        "id": "search_icon",
+        "label": "Image",
+        "info": "Image size is 20x20 pixels"
+      },
+      {
+        "type": "header",
+        "content": "Cart icon"
+      },
+      {
+        "type": "select",
+        "id": "cart_icon_type",
+        "label": "Icon type",
+        "options": [
+          {
+            "value": "font-icon",
+            "label": "Font icon"
+          },
+          {
+            "value": "image",
+            "label": "Image"
+          }
+        ],
+        "default": "font-icon"
+      },
+      {
+        "type": "text",
+        "id": "cart_font_icon",
+        "label": "Font icon name",
+        "default": "icon-shopping-basket",
+        "info": "Default is icon-shopping-basket"
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_icon",
+        "label": "Image",
+        "info": "Image size is 20x20 pixels"
+      }
+    ]
+  }
+]

@@ -1,0 +1,268 @@
+ body {
+	 box-sizing: border-box;
+	 margin: 0;
+	 padding: 0;
+	//  font-family: 'Goudy Bookletter 1911', serif;
+	 font-family: 'Mulish', sans-serif;
+ }
+
+ .containers {
+	 max-width: 1366px;
+	 margin: 0 auto;
+ }
+
+ .header {
+	 display: flex;
+
+	 &__logo {
+		width: 50%;
+		padding: 23px 0 25px 111px;
+	}
+
+	&__right {
+		width: 50%;
+		padding-left: 29px;
+		display: flex;
+	}
+ }
+
+.main-menu {
+
+	display: flex;
+	padding: 25px 0 28px;
+	margin: 0;
+
+
+	&__item {
+		list-style-type: none;
+		margin-right: 32px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	&__link {
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+			text-decoration-color: #202020;
+		}
+	}
+
+	&__span {
+		font-weight: 700;
+        font-size: 21px;
+        line-height: 26px;
+		color: #202020;
+	}
+}
+
+.list-inline {
+	display: flex;
+	padding: 0;
+	margin: 14px 0 0 40px;
+
+	& li {
+		list-style-type: none;
+	}
+
+	& li.search-icon {
+		font-size: 35px;
+
+		& a {
+			color: #202020;
+		}
+	}
+
+	& li.top-cart-holder {
+		font-size: 22px;
+		padding-top: 8px;
+		margin-left: 33px;
+
+		& a {
+			color: #202020;
+		}
+
+		& > .cart-target a.basket {
+			position: relative;
+		}
+
+        & > .cart-target .number {
+			top: -4px;
+			background: #CC0000;
+			// font-size: 9px;
+		}
+	}
+}
+
+.header-icons > ul > li .number {
+    position: absolute;
+    display: block;
+    top: -15px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #999999;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 50%;
+    -moz-border-radius: 50% 50% 50% 50%;
+    -webkit-border-radius: 50% 50% 50% 50%;
+    -ms-border-radius: 50% 50% 50% 50%;
+}
+
+.searchbox.desktop-search {
+	position: absolute;
+	display: none !important;
+	right: 0;
+	background: white;
+	border: 1px solid rgba(221,221,221,.5);
+	z-index: 9;
+	padding: 15px !important;
+	margin: 0;
+}
+
+.mhome {
+
+
+
+	&__wrap {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__wrap-left {
+		background: linear-gradient(90deg, rgba(20, 25, 37, 0) 0%, #131824 30.57%);
+		transform: matrix(-1, 0, 0, 1, 0, 0);
+		width: 499px;
+        height: 520px;
+	}
+
+	&__wrap-right {
+		background: url(background-header-gr.png);
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 2;
+	    width: 499px;
+        height: 520px;
+	}
+
+	&__wrap-img {
+		text-align: center;
+		position: absolute;
+		top: 0;
+		left: calc(50% - 741px/2);
+		background-image: url(background-header.png);
+		background-repeat: no-repeat;
+		background-position: top center;
+		z-index: 1;
+		width: 741px;
+		height: 520px;
+		padding-top: 232px;
+	}
+
+	&__title {
+		margin-bottom: 78px;
+	}
+
+	&__text {
+		display: block;
+		color: #fff;
+		font-size: 32px;
+		line-height: 44px;
+		font-family: Goudy Bookletter 1911;
+		font-weight: 400;
+	}
+
+	&__button {
+		text-decoration: none;
+		color: #fff;
+		font-size: 16px;
+		line-height: 20px;
+		font-weight: 700;
+		text-shadow: 0px -1px 0px rgba(32, 32, 32, 0.33);
+		background: #CC0000;
+		border: 1px solid #950000;
+		box-shadow: inset 0px -2px 2px rgba(32, 32, 32, 0.33);
+		border-radius: 4px;
+		padding: 14px 22px 13px 24px;
+	}
+}
+
+.swiper-slide {
+	text-align: center;
+	//position: relative;
+
+	& .img-mobile {
+		display: none;
+	}
+}
+
+.swiper-content .container-box {
+	position: absolute;
+
+	& .caption-link {
+		margin-top: 33px;
+
+		& a.slider-button {
+			text-decoration: none;
+			color: #fff;
+			font-size: 16px;
+			line-height: 20px;
+			font-weight: 700;
+			text-shadow: 0px -1px 0px rgba(32, 32, 32, 0.33);
+			background: #CC0000;
+			border: 1px solid #950000;
+			box-shadow: inset 0px -2px 2px rgba(32, 32, 32, 0.33);
+			border-radius: 4px;
+			padding: 14px 22px 13px 24px;
+		}
+	}
+
+	& .cation {
+		margin-top: 24px;
+
+		& .sub {
+			text-decoration: line-through;
+			padding-left: 21px;
+			opacity: 0.4;
+		}
+	}
+}
+
+.slideshow-catalog-wrapper {
+	position: relative;
+}
+
+.swiper-button-prev.swiper-button-white {
+	left: 40px;
+	opacity: 0.2;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.swiper-button-next.swiper-button-white {
+	right: 40px;
+	opacity: 0.2;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+ @media (min-width: 992px) {
+
+	 .header-logo .mobile-logo-site {
+		 display: none;
+	 }
+
+ }

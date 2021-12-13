@@ -1,0 +1,82 @@
+<div class="page-cata {{ _sidebar }} {{ _mode_view }}" data-logic="{{ _filter_logic }}">
+  <div class="container">  
+    <div class="row">
+      
+      {% if _sidebar_mode == 'left' %}
+        {% include 'sidebar-catalog' %}
+      {% endif %}
+
+      {% paginate collection.products by _item_per_page %}
+
+      <div class="{{ _main_class }}">
+
+        {% if _col_des_position == 'top' and collection.description != blank %}
+          <div class="cata-description">{{ collection.description }}</div>
+        {% endif %}
+
+        {% include 'sub-collections-banner' %}
+
+        {% include 'cata-toolbar' %}
+
+        {% if _sb_filters_position == 'body' and collection.all_tags.size > 0 %}
+        
+          <div class="sb-widget filter-sidebar position-body style-{{ _body_filters_style }}">
+            <div class="sb-filter-wrapper">
+
+              <div class="f-close" title="Close"><i class="demo-icon icon-close"></i></div>
+              {% if _sb_filters == 'groups' %}
+                {% for block in section.blocks %}
+                  {% if block.type == 'filter' %}
+                    {% include 'filter-body' %}
+                  {% endif %}
+                {% endfor %}
+              
+              {% else %}
+                {% include 'filter-tags' %}
+              
+              {% endif %}
+
+            </div>
+          </div>
+        {% endif %}
+
+        <div id="col-main">
+          {% if collection.products_count > 0 %}
+
+            <div class="cata-product cp-grid{% if _sidebar_mode == 'none' %} no-sidebar{% endif %}">
+              {% if collection.products.size > 0 %}
+
+                {% assign _product_border_top = settings.show_product_border_top %}
+                {% for product in collection.products %}
+                  <div class="product-grid-item mode-view-item{% if _product_border_top %} product-border-top{% endif %}">
+                    {% include 'product-item' %}
+                  </div>
+                {% endfor %}
+
+              {% endif %}
+            </div>
+
+          {% else %}
+            <p>{{ 'collections.general.no_product' | t }}</p>
+
+          {% endif %}
+        </div>
+
+        {% include 'pagination' %}
+
+        {% include 'collection-service-bar' %}
+
+        {% if _col_des_position == 'bottom' and collection.description != blank %}
+          <div class="cata-description">{{ collection.description }}</div>
+        {% endif %}
+      </div>
+
+      {% endpaginate %}
+
+      {% if _sidebar_mode == 'right' %}
+        {% include 'sidebar-catalog' %}
+      {% endif %}
+
+    </div>
+  </div>
+</div>

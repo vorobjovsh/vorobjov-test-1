@@ -1,0 +1,492 @@
+{%- assign _show_slideshow = section.settings.show_slideshow -%}
+{%- assign _hide_mobile = section.settings.hide_mobile -%}
+{%- assign _slideshow_height = section.settings.slideshow_height -%}
+{%- assign _lazyload = settings.use_lazyload -%}
+{%- assign _layout = section.settings.layout -%}
+{%- assign _background_color = section.settings.background -%}
+{%- assign _image_gallery_position = section.settings.image_gallery_position -%}
+{%- assign _image_gallery_border = section.settings.image_gallery_border -%}
+
+{%- assign _autoplay = section.settings.autoplay -%}
+{%- assign _autoplay_speed = section.settings.autoplay_speed | time: 1000 -%}
+{%- assign _animation = section.settings.animation -%}
+
+{%- assign _navigator = section.settings.navigator -%}
+{%- assign _paging = section.settings.paging -%}
+{%- assign _paging_position = section.settings.paging_position -%}
+{%- assign _paging_style = section.settings.paging_style -%}
+
+{% capture emptyImage %}
+  <div class="image no-image">
+    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+  </div>
+{% endcapture %}
+
+{% if _image_gallery_position == 'right' or _image_gallery_position == 'left' %}
+  {%- assign _image_gallery_class = 'col-lg-4' -%}
+  {%- assign _slideshow_class = 'col-lg-8' -%}
+{% elsif _image_gallery_position == 'right-2' %}
+  {%- assign _image_gallery_class = 'col-lg-3' -%}
+  {%- assign _slideshow_class = 'col-lg-9' -%}
+{% endif %}
+
+<div class="slideshow-01 slideshow-catalog-wrapper" data-section-type="slideshow" data-section-id="{{ section.id }}">
+  <div class="bc-wrapper {{ _slideshow_height }} layout-{{ _layout }}{% if _hide_mobile %} d-none d-md-block{% endif %}">
+
+    {% if settings.show_search == 'slideshow' %}
+      <div class="container slideshow-search">
+        <div class="searchbox{% if _search_border_radius %} border-radius{% endif %} d-none d-lg-block">
+
+          {% assign _search_icon_type = settings.search_icon_type %}
+          {% assign _search_font_icon = settings.search_font_icon %}
+          {% assign _search_icon = settings.search_icon %}
+
+          <form id="search" class="navbar-form search" action="/search" method="get">
+            <input type="hidden" name="type" value="product" />
+            <input id="bc-product-search" type="text" name="q" class="form-control bc-product-search"  placeholder="{{ 'general.text.search_placeholder' | t }}" autocomplete="off" />
+
+            <button type="submit" class="search-icon">
+              <span{% if _lazyload and _search_icon_type == 'image' %} class="lazyload waiting"{% endif %}>
+
+                {% if _search_icon_type == 'font-icon' %}
+                  <i class="demo-icon {{ _search_font_icon }}"></i>
+
+                {% else %}
+                  <img {% if _lazyload %}class="lazyload"
+                       data-srcset="{{ _search_icon | img_url: '20x'}} 1x, {{ _search_icon | img_url: '40x'}} 2x"
+                       {% else %}src="{{ _search_icon | img_url: '20x'}}"{% endif %}
+                       alt="Search" />
+
+                {% endif %}
+
+              </span>
+            </button>
+          </form>
+
+          <div id="result-ajax-search" class="result-ajax-search">
+            <ul class="search-results"></ul>
+          </div>
+
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="bc-home-slideshow image-gallery-{{ _image_gallery_position }}" style="background-color: {{ _background_color }};">
+      {% if section.blocks.size > 0 %}
+
+        {% if _image_gallery_position == 'right' or _image_gallery_position == 'right-2' or _image_gallery_position == 'left' %}<div class="row">{% endif %}
+
+        {% if _image_gallery_position == 'left' %}
+          {% for block in section.blocks %}
+
+            {% if block.type == 'menu-list' %}
+              <div class="slideshow-menu-list {{ _image_gallery_class }} d-none d-lg-block">
+                {%- assign _heading = block.settings.heading -%}
+                {%- assign _block_heading_bold = block.settings.heading_bold -%}
+                {%- assign _block_heading_color = block.settings.heading_color -%}
+                {%- assign _block_heading_size = block.settings.heading_size -%}
+                {%- assign _bg_image = block.settings.image -%}
+                {%- assign _image_size = block.settings.image_size -%}
+
+                {% capture background_section %}
+                  {% unless _bg_image == blank %}
+                    {% if _lazyload %}
+                      data-bgset = "{{ _bg_image | img_url: _image_size }}"
+                    {% else %}
+                      style="background-image: url({{ _bg_image | img_url: _image_size }});"
+                    {% endif %}
+                  {% endunless %}
+                {% endcapture %}
+
+                <div class="item-col{% if _image_gallery_border %} image-gallery-border{% endif %}">
+                  <div class="item item-list{% if _lazyload and _bg_image != blank %} lazyload{% endif %}"{% unless _bg_image == blank %} {{ background_section | strip }}{% endunless %}>
+
+                    {% unless _heading == blank %}
+                      <div class="title-wrapper text-left{% if _block_heading_bold %} bold-text{% endif %}" style="color: {{ _block_heading_color }}; font-size: {{ _block_heading_size }}px;">{{ _heading }}</div>
+                    {% endunless %}
+
+                    <div class="box-menu-list">
+                      <div class="row">
+                        {% for i in (1..2) %}
+                          {%- assign _menu = 'menu_item_' | append: i -%}
+
+                          {% unless block.settings[_menu] == blank %}
+                            <ul class="col-md-4 col-sm-6 col-6">
+                              {% for link in linklists[block.settings[_menu]].links %}
+                                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                              {% endfor %}
+                            </ul>
+                          {% endunless%}
+
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            {% endif %}
+
+          {% endfor %}
+        {% endif %}
+
+        {% if _image_gallery_position == 'right' or _image_gallery_position == 'right-2' or _image_gallery_position == 'left' %}<div class="home-slideshow-row {{ _slideshow_class }} col-md-12">{% endif %}
+
+        {% if _image_gallery_position == 'left' %}<div class="slideshow-menu-list">{% endif %}
+        <div class="home-slideshow-wrapper home-slideshow-wrapper-{{ section.id }} swiper-container" data-autoplay="{{ _autoplay }}" data-time="{{ _autoplay_speed }}" data-animation="{{ _animation }}">
+          <div class="home-slideshow home-slideshow-{{ section.id }} swiper-wrapper">
+
+            {% for block in section.blocks %}
+              {%- assign link = block.settings.link -%}
+              {%- assign link_2 = block.settings.link_2 -%}
+              {%- assign textAlign = block.settings.alignment -%}
+              {%- assign position = block.settings.position -%}
+              {%- assign horizontal_position = block.settings.horizontal_position -%}
+              {%- assign textBoxBackground = block.settings.bg_color -%}
+              {%- assign textBoxPad = block.settings.text_box_pad -%}
+
+              {%- assign headingText = block.settings.heading -%}
+              {%- assign headingBoldText = block.settings.heading_bold -%}
+              {%- assign headingAnimation = block.settings.heading_animation -%}
+              {%- assign headingAnimationDelay = block.settings.heading_animation_delay -%}
+              {%- assign headingColor = block.settings.heading_color -%}
+              {%- assign headingSize = block.settings.heading_size -%}
+
+              {%- assign subheadingText = block.settings.subheading -%}
+              {%- assign subheadingBoldText = block.settings.subheading_bold -%}
+              {%- assign subheadingAnimation = block.settings.subheading_animation -%}
+              {%- assign subheadingAnimationDelay = block.settings.subheading_animation_delay -%}
+              {%- assign subheadingColor = block.settings.subheading_color -%}
+              {%- assign subheadingSize = block.settings.subheading_size -%}
+
+              {%- assign captionText = block.settings.caption -%}
+              {%- assign captionBoldText = block.settings.caption_bold -%}
+              {%- assign captionAnimation = block.settings.caption_animation -%}
+              {%- assign captionAnimationDelay = block.settings.caption_animation_delay -%}
+              {%- assign captionColor = block.settings.caption_color -%}
+              {%- assign captionSize = block.settings.caption_size -%}
+
+              {%- assign buttonText = block.settings.button_text -%}
+              {%- assign buttonTextColor = block.settings.button_text_color -%}
+              {%- assign buttonBackground = block.settings.button_text_bg_color -%}
+              {%- assign buttonTextSecondary = block.settings.button_text_2 -%}
+              {%- assign buttonAnimation = block.settings.button_animation -%}
+              {%- assign buttonAnimationDelay = block.settings.button_animation_delay -%}
+
+              {%- assign image_width = '[1024, 1366, 1920, 2048]' -%}
+
+              {% if headingText == blank  and subheadingText == blank  and captionText == blank  and buttonText == blank and buttonTextSecondary == blank %}
+                {%- assign _has_text = false -%}
+              {% else %}
+                {%- assign _has_text = true -%}
+              {% endif %}
+
+              {% if block.type == 'image'  %}
+              	{% include 'slideshow-image' %}
+
+              {% elsif block.type == 'video' %}
+              	{% include 'slideshow-video' %}
+
+              {% endif %}
+
+            {% endfor %}
+
+
+
+          </div>
+        </div>
+
+        <div class="btn-pagination{% if _image_gallery_position == 'overlay' or _image_gallery_position == 'overlay-2' or _image_gallery_position == 'overlay-4' %} fix-overlay{% endif %}">
+          {% if _paging %}
+            <div class="swiper-pagination swiper-pagination-01 swiper-pagination-white {{ _paging_position }} {{ _paging_style }}"></div>
+          {% endif %}
+
+          {% if _navigator %}
+            <div class="swiper-button-next swiper-button-next-01 swiper-button-white"></div>
+            <div class="swiper-button-prev swiper-button-prev-01 swiper-button-white"></div>
+          {% endif %}
+        </div>
+        {% if _image_gallery_position == 'left' %}</div>{% endif %}
+
+        {% if _image_gallery_position == 'overlay-4' %}<div class="container">{% endif %}
+
+        <script>
+          jQuery(document).ready(function($) {
+
+              var i_sections = new theme.Sections();
+              i_sections.register('slideshow',function(){
+                if(jQuery('.slideshow-01 .home-slideshow-wrapper-{{ section.id }}').length){
+                  jQuery('.slideshow-01 .home-slideshow-wrapper-{{ section.id }}').each(function(index,value){
+
+                    let _delay_time = jQuery(value).data('time') * 1000;
+                    let _animation = jQuery(value).data('animation');
+
+                    let swiper = new Swiper('.swiper-container', {
+                      {% if _autoplay %}
+                        autoplay: {
+                          delay: _delay_time,
+                          disableOnInteraction: false,
+                        },
+                      {% endif %}
+                      loop: true,
+                      pagination: {
+                        el: '.swiper-pagination-01',
+                        clickable: true
+                      },
+                      navigation: {
+                        nextEl: '.swiper-button-next-01',
+                        prevEl: '.swiper-button-prev-01',
+                      },
+                      spaceBetween: 0,
+                      effect: _animation,
+                      {% case section.settings.animation %}
+                        {% when 'cube' %}
+                          cubeEffect: {
+                            slideShadows: false
+                          },
+                        {% when 'coverflow' %}
+                          coverflowEffect: {
+                            rotate: 30,
+                            slideShadows: false
+                          },
+                        {% when 'flip' %}
+                          flipEffect: {
+                            rotate: 30,
+                            slideShadows: false
+                          },
+                        {% else %}
+                      {% endcase %}
+                      setWrapperSize: false,
+                      on: {
+                        imagesReady: function (swiper) {
+                          $('.home-slideshow-{{ section.id }}').find('.swiper-slide').each(function(){
+                            let _this = $(this);
+                            _this.find('.video-slide').show();
+
+                            if (!_this.find('.video-slide').data('full-height')) {
+                              _this.find('.video-slide video').css({
+                              });
+                            }
+                            else{
+                              _this.find('.video-slide video').css({
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translate(-50%, -50%)'
+                              });
+                            }
+                          });
+                        }
+                      }
+                    });
+                  });
+                }
+              });
+
+          });
+        </script>
+
+        {% if _image_gallery_position == 'right' or _image_gallery_position == 'right-2' or _image_gallery_position == 'left' %}</div>{% endif %}
+
+        {% unless _image_gallery_position == 'none' or _image_gallery_position == 'left' %}
+          {%- assign _image_gallery_ind = 0 -%}
+          {% for block in section.blocks %}
+            {% if block.type == 'image-gallery' %}
+              {%- assign _image_gallery_ind = _image_gallery_ind | plus: 1 -%}
+            {% endif %}
+          {% endfor %}
+
+          {% case _image_gallery_ind %}
+            {% when 1 %}
+              {% assign _i_class = 'col-lg-12' %}
+            {% when 2 %}
+              {% assign _i_class = 'col-lg-6' %}
+            {% when 3 %}
+              {% assign _i_class = 'col-lg-4' %}
+            {% when 4 %}
+              {% assign _i_class = 'col-lg-3' %}
+            {% when 5 %}
+              {% assign _i_class = 'col-fix-5' %}
+            {% else %}
+              {% assign _i_class = 'col-lg-2' %}
+          {% endcase %}
+
+          <div class="slideshow-image-gallery{% if _image_gallery_position == 'right' or _image_gallery_position == 'right-2' %} {{ _image_gallery_class }}{% endif %} number-{{ _image_gallery_ind }} position-{{ _image_gallery_position }} d-none d-lg-block">
+            <div class="row row-padding-{% if _image_gallery_position == 'overlay-4' %}20{% else %}10{% endif %}{% if _image_gallery_border %} image-gallery-border{% endif %}">
+
+              {% for block in section.blocks %}
+                {% if block.type == 'image-gallery' %}
+
+                  {%- assign _image = block.settings.image -%}
+                  {%- assign _image_size = '570x' -%}
+                  {%- assign _link = block.settings.button_link -%}
+                  {%- assign _textbox_position = block.settings.textbox_position -%}
+
+                  {%- assign _title = block.settings.image_title -%}
+                  {%- assign _title_color = block.settings.title_color -%}
+                  {%- assign _title_size = block.settings.title_size -%}
+                  {%- assign _title_text_bold = block.settings.title_text_bold -%}
+
+                  {%- assign _subtitle = block.settings.image_subtitle -%}
+                  {%- assign _subtitle_color = block.settings.subtitle_color -%}
+                  {%- assign _subtitle_size = block.settings.subtitle_size -%}
+                  {%- assign _subtitle_text_bold = block.settings.subtitle_text_bold -%}
+
+                  {%- assign _button_text = block.settings.button_text -%}
+                  {%- assign _button_color = block.settings.button_text_color -%}
+                  {%- assign _button_bg = block.settings.button_text_bg_color -%}
+                  {%- assign _button_text_size = block.settings.button_size -%}
+                  {%- assign _button_text_bold = block.settings.button_text_bold -%}
+
+                  <div class="{{ _i_class }} padding-{% if _image_gallery_position == 'overlay-4' %}20{% else %}10{% endif %}">
+                    <div class="banner-item text-box-overlay {% if _textbox_position == 'bottom' %}bottom-center{% else %}center-{{ _textbox_position }}{% endif %}">
+
+                      <div class="image">
+                        <a href="{{ _link }}">
+                          {% unless _image == blank  %}
+                            {% include 'image-lazysize' with image: _image, image_size: _image_size, image_class: '', image_alt: 'Banner' %}
+                          {% else %}
+                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                          {% endunless %}
+                        </a>
+                      </div>
+
+                      {% unless _title == blank and _subtitle == blank and _button_text == blank  %}
+                        <div class="text text-left{% if _button_bg == blank or _button_bg == 'rgba(0,0,0,0)' %} btn{% endif %}">
+
+                          {% unless _title == blank and _subtitle == blank %}<div class="wrap-title">{% endunless %}
+                            {% unless _title == blank %}
+                              <div class="title{% if _title_text_bold %} bold-text{% endif %}" style="color: {{ _title_color }}; font-size: {{ _title_size }}px;">{{ _title }}</div>
+                            {% endunless %}
+
+                            {% unless _subtitle == blank %}
+                              <div class="subtitle{% if _subtitle_text_bold %} bold-text{% endif %}" style="color: {{ _subtitle_color }}; font-size: {{ _subtitle_size }}px;">{{ _subtitle }}</div>
+                            {% endunless %}
+                          {% unless _title == blank and _subtitle == blank %}</div>{% endunless %}
+
+                          {% unless _button_text == blank %}
+                            <a class="{% if _button_text_bold %}bold-text {% endif %}{% unless _button_bg == blank or _button_bg == 'rgba(0,0,0,0)' %}btn {% endunless %}btn-banner" href="{{ _link }}" style="color: {{ _button_color }}; background: {{ _button_bg }}; font-size: {{ _button_text_size }}px;">{{ _button_text }}</a>
+                          {% endunless %}
+
+                        </div>
+                      {% endunless %}
+
+                    </div>
+                  </div>
+
+                {% endif %}
+              {% endfor %}
+
+            </div>
+          </div>
+        {% endunless %}
+
+        {% if _image_gallery_position == 'right' or _image_gallery_position == 'right-2' or _image_gallery_position == 'left' %}</div>{% endif %}
+
+        {% for block in section.blocks %}
+          {% if block.type == 'categories' %}
+            <div class="block-categories">
+
+              <div class="wrap-list">
+                <ul class="categories-list">
+                  {% for i in (1..6) %}
+                    {%- assign _collection = 'collection_' | append: i -%}
+                    {% unless block.settings[_collection] == blank %}
+                      {%- assign collection = collections[block.settings[_collection]] -%}
+                      {%- assign _icon_type = block.settings.icon_type -%}
+                      {% assign _image_size = '20x' %}
+
+                      <li>
+                        {% unless _icon_type == 'none' %}
+                          <div class="image">
+                            {% case _icon_type %}
+                              {% when 'image' %}
+                                {% include 'image-lazysize' with image: collection.image, image_size: _image_size, image_class: '', image_alt: collection.title %}
+
+                              {% when 'upload' %}
+                                {%- assign _image = 'image_' | append: i -%}
+                                {% if block.settings[_image] == blank %}
+                                  {% include 'image-lazysize' with image: collection.image, image_size: _image_size, image_class: '', image_alt: collection.title %}
+                                {% else %}
+                                  {% include 'image-lazysize' with image: block.settings[_image], image_size: _image_size, image_class: '', image_alt: collection.title %}
+                                {% endif %}
+
+                              {% when 'svg' %}
+                                {%- assign _svg = 'svg_' | append: i -%}
+                                {% unless block.settings[_svg] == blank %}{{ block.settings[_svg] }}{% endunless %}
+
+                              {% when 'icon' %}
+                                {%- assign _icon = 'icon_' | append: i -%}
+                                {% unless block.settings[_icon] == blank %}<i class="{{ block.settings[_icon] }}"></i>{% endunless %}
+
+                              {% else %}
+
+                            {% endcase %}
+                          </div>
+                        {% endunless %}
+                        <a href="{{ collection.url }}">{{ collection.title }}</a>
+                      </li>
+                    {% endunless %}
+                  {% endfor %}
+                </ul>
+
+                {%- assign _menu = block.settings.menu_item -%}
+                {% unless _menu == blank %}
+                  <ul class="menu-list">
+                    {% for l in linklists[_menu].links %}
+                      <li><a href="{{ l.url }}"><span>{{ l.title }}</span></a></li>
+                    {% endfor %}
+                  </ul>
+                {% endunless %}
+              </div>
+
+              {% if block.settings.show_service_bar %}
+              <div class="block-service-bar">
+                {% for i in (1..3) %}
+                {% assign _show = 'bar_' | append: i %}
+
+                {% if block.settings[_show ] %}
+                {% assign _bar_icon = 'bar_icon_' | append: i %}
+                {% assign _text = 'text_' | append: i %}
+
+                <div class="item">
+                  {% unless block.settings[_bar_icon] == blank %}<div class="icon"><i class="{{ block.settings[_bar_icon] }}"></i></div>{% endunless %}
+                  {% unless block.settings[_text] == blank %}<div class="text">{{ block.settings[_text] }}</div>{% endunless %}
+                </div>
+                {% endif %}
+
+                {% endfor %}
+              </div>
+              {% endif %}
+
+            </div>
+          {% endif %}
+        {% endfor %}
+
+      {% if _image_gallery_position == 'overlay-4' %}</div>{% endif %}
+
+      {% else %}
+
+        <div class="home-slideshow-wrapper swiper-container">
+          <div class="home-slideshow swiper-wrapper">
+
+            <div class="swiper-slide">
+              {{ emptyImage }}
+            </div>
+
+          </div>
+        </div>
+
+      {% endif %}
+    </div>
+
+    <style>
+      @media (min-width: 1200px) {
+        .manually-height .bc-home-slideshow .swiper-slide {
+          height: {{ section.settings.manually_height }}px;
+        }
+      }
+    </style>
+
+  </div>
+</div>

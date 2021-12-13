@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="{{ shop.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <title>{{ shop.name }}</title>
+
+  <meta name="description" content="">
+
+   <link rel="preload" href="{{'header-footer.scss' | asset_url }}" as="style">
+   <link rel="preload" href="{{'vendor.css' | asset_url }}" as="style">
+   <link rel="preload" href="{{'global.scss' | asset_url }}" as="style">
+  {% if template == 'index' %}
+   <link rel="preload" href="{{'themes.scss' | asset_url }}" as="style" >
+  {% else %}
+   <link rel="preload" href="{{'styles.scss' | asset_url }}" as="style">
+  {% endif %}
+
+   <link rel="preload" href="{{'arenafont.css' | asset_url }}" as="style">
+   <link href="{{ 'arenafont.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Mulish:wght@400;700&display=swap" rel="stylesheet">
+
+  <script crossorigin="anonymous" src="{{ 'lazysizes.min.js' | asset_url }}" async></script>
+  <script crossorigin="anonymous" src="{{ 'jquery-3.5.min.js' | asset_url }}"></script>
+  <script crossorigin="anonymous" src="{{ 'bootstrap.4x.min.js' | asset_url }}" defer></script>
+
+  <link href="{{ 'vendor.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+  <link href="{{ 'header-footer.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+  {% comment %} <link href="{{ 'global.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all"> {% endcomment %}
+  {% if template == 'index' %}
+  <link href="{{ 'themes.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+  {% else %}
+  <link href="{{ 'styles.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+  {% endif %}
+
+  {{ 'main.build.css' | asset_url | stylesheet_tag }}
+
+  {{ content_for_header }}
+</head>
+
+<body>
+
+	<section class="containers">
+	    {% section 'header' %}
+		{{ content_for_layout }}
+	</section>
+    {% include 'script-files' %}
+</body>
+</html>

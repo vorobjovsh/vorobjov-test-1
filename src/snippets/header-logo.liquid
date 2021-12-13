@@ -1,0 +1,17 @@
+<div class="header-logo">
+  {% assign _logo_image = section.settings.logo %}
+  {% assign _logo_size = section.settings.logo_max_width | append: 'x' %}
+  {% assign _m_logo_image = section.settings.mobile_logo %}
+  {% assign _m_logo_size = section.settings.mobile_logo_max_width | append: 'x' %}
+  {% assign _logo_size_2x = section.settings.mobile_logo_max_width | times: 2 | append: 'x' %}
+  <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}" class="logo-site{% if _lazyload %} lazyload waiting{% endif %}">
+    <img {% if _lazyload %}class="lazyload desktop-logo-site" data-srcset="{{ _logo_image | img_url: _logo_size }} 1x"
+         {% else %}class="desktop-logo-site" src="{{ _logo_image | img_url: _logo_size }}"{% endif %}
+         alt="{{ shop.name | escape }}"
+         style="max-width: {{  section.settings.logo_max_width }}px;" />
+    <img {% if _lazyload %}class="lazyload mobile-logo-site" data-srcset="{{ _m_logo_image | img_url: _logo_size_2x }} 2x"
+         {% else %}class="mobile-logo-site" src="{{ _m_logo_image | img_url: _logo_size_2x }}"{% endif %}
+         alt="{{ shop.name | escape }}"
+         style="max-width: {{ section.settings.mobile_logo_max_width }}px;" />
+  </a>
+</div>

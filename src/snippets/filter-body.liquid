@@ -1,0 +1,101 @@
+  {% assign file_extension = 'png' %}
+  {% assign i_fil = i_fil | plus: 1 %}
+  {% assign _filter_title  = block.settings.filter_prefix | strip  %}
+  {% assign _prefix_filter = block.settings.filter_prefix | strip | downcase | replace: ' ', '-' %}
+  {% assign _arr_prop = block.settings.filter_prefix_prop | split: ',' %}
+
+    {% unless _prefix_filter == blank %}
+      {% capture ci %}{{ _prefix_filter }}{% endcapture %}
+      <div class="sbw-filter">
+        <div class="grid-uniform" data-prefix="{{_prefix_filter}}">
+
+          <div id="filter-{{ i_fil }}" class="sb-filter {{_prefix_filter}}" data-type="{{_prefix_filter}}">
+            <div class="sbf-title">
+              <span>{{ _filter_title }}</span>
+              <a id="clear-filter-{{ i_fil }}" class="clear-filter hidden" style="float: right;" href="javascript:void(0);">Clear</a>
+            </div>
+
+            <ul class="advanced-filters{% if ci == 'color' %} list-inline afs-color{% endif %}">
+              <li class="hide">{{_all_tags}}</li>
+
+              {% for cus_tag in _arr_prop %}
+                {% capture af_tag %}{{ cus_tag | strip | downcase | prepend: '+++' | append: '+++' }}{% endcapture %}
+
+                {% assign custom_tag = cus_tag | strip | downcase %}
+
+                {% if _all_tags contains af_tag %}
+                  {% assign value = custom_tag %}
+                  {% assign new_val = custom_tag | capitalize %}
+
+                  {% assign active_bool = false %}
+                  {% for cur_tag in current_tags %}
+                  {% capture n_t %}{{ cur_tag | downcase }}{% endcapture %}
+                    {% if n_t == custom_tag %}
+                      {% assign active_bool = true %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% assign t_color = settings.color_config | downcase %}
+                  {% assign color_temp = value | split: ' ' | last | handle %}
+
+                  {% if active_bool %}
+                    {% for tag in collection.tags %}
+                      {% capture t %}{{tag | strip | downcase }}{% endcapture %}
+                      {% if t == custom_tag  %}
+                        
+                        {% if ci == 'color' %}
+                          <li class="advanced-filter af-color color-{{ value | handle }}  active-filter" data-group="{{ _prefix_filter }}" data-handle="{{ custom_tag | handleize }}">
+                            {% if settings.use_color_hexcode and t_color contains color_temp %}
+                              <div class="inner cf-{{ value | handle }}">
+                                {{ '' | link_to_remove_tag: tag | replace: 'Remove tag ','' }}
+                              </div>
+                            {% else %}
+                              <div class="inner" style="background-color:{{ value | handle }}; background-image: url({{ value | handle | append: '.' | append: file_extension | asset_url }});">
+                                {{ '' | link_to_remove_tag: tag | replace: 'Remove tag ','' }}
+                              </div>
+                            {% endif %}
+                          </li>
+                        {% else %}
+                          <li class="advanced-filter rt active-filter" data-group="{{ _prefix_filter }}" data-handle="{{ custom_tag | handleize }}">
+                            <div class="inner">
+                              {{ custom_tag | capitalize | link_to_remove_tag: tag | replace: 'Remove tag ','' }}
+                            </div>
+                          </li>
+                        {% endif %}
+
+                      {% endif %}
+                    {% endfor %}
+
+                  {% else %}
+
+                    {% if ci == 'color' %}
+                      <li class="advanced-filter af-color color-{{ value | handle }}" data-group="{{ _prefix_filter }}"  data-test="{{cus_tag}}">
+                        {% if settings.use_color_hexcode and t_color contains color_temp %}
+                          <div class="inner cf-{{ value | handle }}">
+                            {{ '' | link_to_add_tag: custom_tag | replace: 'Narrow selection to products matching tag ', '' }}
+                          </div>
+                        {% else %}
+                          <div class="inner" style="background-color:{{ value | handle }}; background-image: url({{ value | handle | append: '.' | append: file_extension | asset_url }});">
+                            {{ '' | link_to_add_tag: custom_tag | replace: 'Narrow selection to products matching tag ', '' }}
+                          </div>
+                        {% endif %}
+                      </li>
+
+                    {% else %}
+                      <li class="advanced-filter rt" data-group="{{ _prefix_filter }}" data-test="{{cus_tag}}">
+                        <div class="inner">
+                          {{ custom_tag | capitalize | link_to_add_tag: custom_tag | replace: 'Narrow selection to products matching tag ', '' }}
+                        </div>
+                      </li>
+
+                    {% endif %}
+
+                  {% endif %}
+                  
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endunless %}

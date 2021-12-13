@@ -1,0 +1,29 @@
+<style type="text/css">
+
+  .swiper-slide-{{ block.id }}.swiper-slide-active .heading {
+    color: {{ headingColor }}; font-size: {{ headingSize }}px; -webkit-animation-name: {{headingAnimation }}; animation-name: {{ headingAnimation }}; -webkit-animation-delay: {{ headingAnimationDelay }}s; animation-delay: {{ headingAnimationDelay }}s;
+  }
+  .swiper-slide-{{ block.id }}.swiper-slide-active .subheading {
+    color: {{ subheadingColor }}; font-size: {{ subheadingSize }}px; -webkit-animation-name: {{ subheadingAnimation }}; animation-name: {{ subheadingAnimation }}; -webkit-animation-delay: {{ subheadingAnimationDelay }}s; animation-delay: {{ subheadingAnimationDelay }}s;
+  }
+  .swiper-slide-{{ block.id }}.swiper-slide-active .cation {
+    color: {{ captionColor }}; font-size: {{ captionSize }}px; -webkit-animation-name: {{ captionAnimation }}; animation-name: {{ captionAnimation }}; -webkit-animation-delay: {{ captionAnimationDelay }}s; animation-delay: {{ captionAnimationDelay }}s;
+  }
+  .swiper-slide-{{ block.id }}.swiper-slide-active .caption-link {
+    -webkit-animation-name: {{ buttonAnimation }}; animation-name: {{ buttonAnimation }}; -webkit-animation-delay: {{ buttonAnimationDelay }}s; animation-delay: {{ buttonAnimationDelay }}s;
+  }
+  .swiper-slide-{{ block.id }}.swiper-slide-active .caption-link .slider-button{
+    color: {{ buttonTextColor }};
+    background: {{ buttonBackground }};
+    border: 1px solid {{ buttonBackground }};
+  }
+  .swiper-slide-{{ block.id }} img{
+    object-position: {{ block.settings.image_position }};
+  }
+  .swiper-slide-{{ block.id }}.swiper-slide-active .container-box{
+    background: {{ textBoxBackground }};
+  }
+  .bc-home-slideshow .swiper-slide-{{ block.id }} .swiper-content .container-box:not(.bg-color-none){
+    padding: {{ textBoxPad }}px 50px;
+  }
+</style>

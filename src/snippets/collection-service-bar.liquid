@@ -1,0 +1,42 @@
+{% assign _check_service_bar = false %}
+{% for block in section.blocks %}
+  {% if block.type == 'service-bar' %}
+    {% assign _check_service_bar = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if _check_service_bar %}
+  <div class="policies-content">
+      <div class="policy-list row">
+          {% for block in section.blocks %}
+              {% if block.type == 'service-bar' %}
+                  {%- assign _image = block.settings.image -%}
+                  {%- assign _image_size = '45x' -%}
+                  {%- assign _heading = block.settings.heading -%}
+                  {%- assign _subheading = block.settings.subheading -%}
+
+                  <div class="policy-item col-md-4 col-sm-4 col-12">
+                      <div class="item tp-next">
+                        <div class="image">
+                          {% unless _image == blank %}
+                            <img class="lazyload" data-src="{{ _image | img_url: _image_size }}" alt="Icon" />   
+                          {% else %}
+                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                          {% endunless %}
+                        </div>
+
+                        {% unless _heading == blank and _subheading == blank %}
+                          <div class="text">
+                            {% unless _heading == blank %}<h6>{{ _heading }}</h6>{% endunless %}
+                            {% unless _subheading == blank %}<span>{{ _subheading }}</span>{% endunless %}
+                          </div>
+                        {% endunless %}
+
+                      </div>
+                  </div>
+              {% endif %}
+          {% endfor %}
+      </div>
+  </div>
+{% endif %}

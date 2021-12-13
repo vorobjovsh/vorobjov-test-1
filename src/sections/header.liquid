@@ -1,0 +1,99 @@
+<section class="container__section">
+    <header class="header">
+		<div class="header__logo">
+			{%- include 'header-logo' -%}
+		</div>
+		<div class="header__right">
+			<div class="header__menu">
+				{%- include 'main-menu' -%}
+			</div>
+			<div class="header__search">
+				{%- include 'header-search' -%}
+			</div>
+		</div>
+	</header>
+</section>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+	  {
+         "type": "header",
+         "content": "Desktop Logo image"
+      },
+      {
+         "type": "image_picker",
+         "id": "logo",
+         "label": "Image"
+      },
+      {
+         "type": "range",
+         "id": "logo_max_width",
+         "label": "Custom logo width",
+         "min": 100,
+         "max": 400,
+         "step": 5,
+         "unit": "px",
+         "default": 210,
+         "info": "You must upload double the pixel dimensions image to adapt retina display. Eg. setting 100px -> Upload 200px"
+      },
+      {
+         "type": "header",
+         "content": "Mobile Logo image"
+      },
+      {
+         "type": "image_picker",
+         "id": "mobile_logo",
+         "label": "Image"
+      },
+      {
+         "type": "range",
+         "id": "mobile_logo_max_width",
+         "label": "Custom logo width",
+         "min": 100,
+         "max": 400,
+         "step": 5,
+         "unit": "px",
+         "default": 155,
+         "info": "You must upload double the pixel dimensions image to adapt retina display. Eg. setting 100px -> Upload 200px"
+      },
+      {
+         "type": "header",
+         "content": "Desktop Navigation"
+      },
+      {
+         "type": "select",
+         "id": "nav_align",
+         "label": "Align Navigation Menu",
+         "default": "start",
+         "options": [
+            {
+               "value": "start",
+               "label": "Left"
+            },
+            {
+               "value": "center",
+               "label": "Center"
+            },
+            {
+               "value": "end",
+               "label": "Right"
+            }
+         ]
+      },
+      {
+         "type": "link_list",
+         "id": "nav_linklist",
+         "label": "Main menu",
+         "default": "main-menu"
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

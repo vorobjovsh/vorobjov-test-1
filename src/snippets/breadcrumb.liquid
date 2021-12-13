@@ -1,0 +1,194 @@
+{% assign _breadcrumb_mobile = settings.breadcrumb_mobile %}
+{% assign _breadcrumb_alignment = settings.breadcrumb_alignment %}
+
+{% if template == 'page.about' %}
+  {% assign _breadcrumb_styles = section.settings.breadcrumb_styles %}
+  {% capture _breadcrumb_image %} {{ section.settings.breadcrumb_bg | img_url: '1920x' }} {% endcapture %}
+  {% if section.settings.breadcrumb_bg == blank %}{% capture _breadcrumb_image %} {{ 'breadcrumb_bg.jpg' | asset_url }} {% endcapture %}{% endif %}
+
+{% elsif template == 'page.category-top' %}
+  {% assign _breadcrumb_styles = section.settings.breadcrumb_styles %}
+  {% capture _breadcrumb_image %} {{ section.settings.breadcrumb_bg | img_url: '1920x' }} {% endcapture %}
+  {% if section.settings.breadcrumb_bg == blank %}{% capture _breadcrumb_image %} {{ 'breadcrumb_bg.jpg' | asset_url }} {% endcapture %}{% endif %}
+
+{% else %}
+  {% assign _breadcrumb_styles = settings.breadcrumb_styles %}
+
+  {% if template contains 'customers' or template == 'page' %}
+    {% capture _breadcrumb_image %} {{ 'breadcrumb_bg.jpg' | asset_url }} {% endcapture %}
+  {% else %}
+    {% capture _breadcrumb_image %} {{ section.settings.breadcrumb_image | img_url: '1920x' }} {% endcapture %}
+    {% if section.settings.breadcrumb_image == blank %}{% capture _breadcrumb_image %} {{ 'breadcrumb_bg.jpg' | asset_url }} {% endcapture %}{% endif %}
+  {% endif %}
+{% endif %}
+
+<div class="wrap-breadcrumb bw-{{ _breadcrumb_styles }}{% if _breadcrumb_alignment %} breadcrumb-center{% endif %}{% unless _breadcrumb_mobile %} d-none d-md-block{% endunless %}"{% if _breadcrumb_styles == 'image' %} style="background-image: url({{_breadcrumb_image }});"{% endif %}>
+  <div id="breadcrumb" class="breadcrumb-holder container">
+
+        <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a itemprop="item" href="{{ routes.root_url }}">
+              <span itemprop="name" class="d-none">{{ shop.name | escape }}</span>{{ 'general.text.home' | t }}
+              <meta itemprop="position" content="1" /> 
+            </a>
+          </li>
+
+          {% if template contains 'product' %}
+
+            {% if collection %}
+              {% if collection.handle %}
+
+              <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="d-none">
+                <a href="{{collection.url}}" itemprop="item">
+                  <span itemprop="name">{{ collection.title }}</span>
+                  <meta itemprop="position" content="2" />
+                </a>
+              </li>    
+              <li>{{ collection.title | link_to: collection.url }}</li>
+
+              {% endif %}
+            {% endif %}
+
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="d-none">
+              <a href="{{product.url}}" itemprop="item">
+                <span itemprop="name">{{ product.title }}</span>
+                <meta itemprop="position" content="2" />
+              </a>
+            </li>
+            <li class="active">{{ product.title }}</li>
+
+          {% elsif template contains 'collection' %}
+
+            {% if current_tags %}
+              <li>{{ collection.title | link_to: collection.url }}</li>
+              <li class="active">{{ current_tags.first }}</li>
+
+            {% elsif collection.handle %}
+              <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="d-none">
+                <a href="{{collection.url}}" itemprop="item">
+                  <span itemprop="name">{{ collection.title }}</span>
+                  <meta itemprop="position" content="2" />
+                </a>
+              </li>
+              <li class="active">{{ collection.title }}</li>
+
+            {% else %}
+              <li class="active">{{ page_title }}</li>
+            {% endif %}
+
+          {% elsif template == 'article' %}
+            <li>{{ blog.title | link_to: blog.url }}</li>
+            <li class="active">{{ article.title }}</li>
+
+          {% else %}
+            <li class="active">{{ page_title }}</li>
+
+          {% endif %}
+        </ul>
+
+        {% if template == 'page.category-top' and settings.template_skin != 'simple' %}
+          <div class="category-top-menu">
+            <h3 class="category-top-heading">{{ page_title }}</h3>
+
+            {%- assign _check_menu = false -%}
+            {% for i in (1..4) %}
+              {%- assign _menu = 'menu_' | append: i -%}
+              {% if section.settings[_menu] != blank %}
+                {%- assign _check_menu = true -%}
+              {% break %}
+              {% endif %}
+            {% endfor %}
+
+            {% if _check_menu %}
+            <div class="category-top-menu-list">
+              <div class="row">
+                {% for i in (1..4) %}
+                  {%- assign _mega_width = 'mega_width_' | append: i -%}
+                  {%- assign _menu_border_right = 'menu_border_right_' | append: i -%}
+                  {%- assign _menu_heading = 'menu_heading_' | append: i -%}
+                  {%- assign _menu = 'menu_' | append: i -%}
+
+                  {% unless section.settings[_menu] == blank %}
+                    <div class="col-md-{{ section.settings[_mega_width] }}{% if section.settings[_menu_border_right] %} menu-border-right{% endif %}">
+                      <div class="menu-box">
+                        <h6>{{ section.settings[_menu_heading] }}</h6>
+
+                        <ul class="list">
+                          {% for l in linklists[section.settings[_menu]].links %}
+                            <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  {% endunless %}
+
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+      
+          </div>
+        {% endif %}
+
+  </div>
+
+  <style type="text/css">
+    #shopify-section-page-about-template .bw-image,
+    #shopify-section-page-category-top-template .bw-image{
+      height: {{ section.settings.breadcrumb_height }}px;
+    }
+  </style>
+</div>
+
+{% if template == 'page.category-top' and settings.template_skin == 'simple' %}
+  <div class="container">
+    <h3 class="category-top-heading text-center">{{ page_title }}</h3>
+    <div class="category-top-image" style="background-image: url({{_breadcrumb_image }});">
+      <div class="category-top-menu">
+
+        <div class="category-top-menu-list">
+          <div class="row">
+            {% for i in (1..4) %}
+              {%- assign _mega_width = 'mega_width_' | append: i -%}
+              {%- assign _menu_border_right = 'menu_border_right_' | append: i -%}
+              {%- assign _menu_heading = 'menu_heading_' | append: i -%}
+              {%- assign _menu = 'menu_' | append: i -%}
+
+              {% unless section.settings[_menu] == blank %}
+                <div class="col-md-{{ section.settings[_mega_width] }}{% if section.settings[_menu_border_right] %} menu-border-right{% endif %}">
+                  <div class="menu-box">
+                    <h6>{{ section.settings[_menu_heading] }}</h6>
+
+                    <ul class="list">
+                      {% for l in linklists[section.settings[_menu]].links %}
+                        <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% endunless %}
+
+            {% endfor %}
+          </div>
+        </div>
+
+        {%- assign _button_text = section.settings.button_text -%}
+        {%- assign _button_link = section.settings.button_link -%}
+        {%- assign _button_color = section.settings.button_text_color -%}
+        {%- assign _button_bg = section.settings.button_text_bg_color -%}
+
+        {% unless _button_text == blank %}
+          <a class="{% unless _button_bg == blank or _button_bg == 'rgba(0,0,0,0)' %}btn {% endunless %}btn-banner" href="{{ _button_link }}" style="color: {{ _button_color }}; background: {{ _button_bg }};">{{ _button_text }}</a>
+        {% endunless %}
+
+        <style type="text/css">
+          #shopify-section-page-category-top-template .category-top-image{
+            height: {{ section.settings.breadcrumb_height }}px;
+          }
+        </style>
+
+      </div> 
+    </div>
+ 
+  </div>
+{% endif %}

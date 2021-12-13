@@ -1,0 +1,13 @@
+{% assign _nav_linklist = section.settings.nav_linklist %}
+
+{% unless _nav_linklist == blank %}
+	<ul class="main-menu">
+		{% for l in linklists[_nav_linklist].links %}
+			<li class="main-menu__item {% if l.active %}active{% endif %}">
+				<a href="{{ l.url }}" class="main-menu__link">
+					<span class="main-menu__span">{{ l.title }}</span>
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endunless %}

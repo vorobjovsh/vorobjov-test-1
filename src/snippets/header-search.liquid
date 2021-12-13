@@ -1,0 +1,115 @@
+<div class="header-icons d-none d-lg-block">
+  <ul class="list-inline">
+
+    {% if settings.show_search == 'header' %}
+
+      	{% assign _search_border_radius = settings.search_border_radius %}
+      	{% assign _search_icon_type = settings.search_icon_type %}
+        {% assign _search_font_icon = settings.search_font_icon %}
+        {% assign _search_icon = settings.search_icon %}
+
+        <li class="search-icon search-icon-desktop">
+          <a href="javascript:;"{% if _lazyload and _search_icon_type == 'image' %} class="lazyload waiting"{% endif %}>
+            {% if _search_icon_type == 'font-icon' %}
+              <i class="demo-icon {{ settings.search_font_icon }}"></i>
+
+            {% else %}
+              <img {% if _lazyload %}class="lazyload"
+                   data-srcset="{{ _search_icon | img_url: '20x'}} 1x, {{ _search_icon | img_url: '40x'}} 2x"
+                   {% else %}src="{{ _search_icon | img_url: '20x'}}"{% endif %}
+                   alt="Search" />
+
+            {% endif %}
+          </a>
+
+          <div class="searchbox desktop-search{% if _search_border_radius %} border-radius{% endif %}">
+            <form id="search" class="navbar-form search" action="/search" method="get">
+              <input type="hidden" name="type" value="product" />
+              <input id="bc-product-search" type="text" name="q" class="form-control bc-product-search"  placeholder="{{ 'general.text.search_placeholder' | t }}" autocomplete="off" />
+
+              <button type="submit">
+                <span{% if _lazyload and _search_icon_type == 'image' %} class="lazyload waiting"{% endif %}>
+
+                  {% if _search_icon_type == 'font-icon' %}
+                    <i class="demo-icon {{ _search_font_icon }}"></i>
+
+                  {% else %}
+                    <img {% if _lazyload %}class="lazyload"
+                         data-srcset="{{ _search_icon | img_url: '20x'}} 1x, {{ _search_icon | img_url: '40x'}} 2x"
+                         {% else %}src="{{ _search_icon | img_url: '20x'}}"{% endif %}
+                         alt="Search" />
+
+                  {% endif %}
+
+                </span>
+              </button>
+            </form>
+
+            {% if settings.ajax_search == 'default-theme' %}
+              <div id="result-ajax-search" class="result-ajax-search">
+                <ul class="search-results"></ul>
+              </div>
+            {% endif %}
+          </div>
+
+        </li>
+
+
+    {% endif %}
+
+    {% unless settings.catalog_mode %}
+      {% assign _cart_icon_type = settings.cart_icon_type %}
+      {% assign _cart_font_icon = settings.cart_font_icon %}
+      {% assign _cart_icon = settings.cart_icon %}
+
+      <li class="top-cart-holder{% if settings.cart_styles == 'dropdown' %} hover-dropdown{% endif %}">
+        <div class="cart-target">
+
+          {% if settings.cart_styles == 'dropdown' %}
+            <a href="javascript:void(0)" class="basket dropdown-toggle{% if _lazyload and _cart_icon_type == 'image' %} lazyload waiting{% endif %}" title="cart">
+              {% if _cart_icon_type == 'font-icon' %}
+                <i class="demo-icon {{ _cart_font_icon }}"></i>
+
+              {% else %}
+                <img {% if _lazyload %}class="lazyload"
+                     data-srcset="{{ _cart_icon | img_url: '20x'}} 1x, {{ _cart_icon | img_url: '40x'}} 2x"
+                     {% else %}src="{{ _cart_icon | img_url: '20x'}}"{% endif %}
+                     alt="Cart" />
+
+              {% endif %}
+
+              <span class="number"><span class="n-item">{{ cart.item_count }}</span></span>
+            </a>
+
+            <div class="cart-dd">
+              <form id="cart-info" action="{{routes.cart_url}}" method="post">
+                <div id="cart-content" class="cart-content">
+                  <div class="cart-loading"></div>
+                </div>
+              </form>
+            </div>
+
+          {% else %}
+            <a href="javascript:void(0)" class="basket cart-toggle{% if _lazyload and _cart_icon_type == 'image' %} lazyload waiting{% endif %}" title="cart">
+              {% if _cart_icon_type == 'font-icon' %}
+                <i class="demo-icon {{ _cart_font_icon }}"></i>
+
+              {% else %}
+                <img {% if _lazyload %}class="lazyload"
+                     data-srcset="{{ _cart_icon | img_url: '20x'}} 1x, {{ _cart_icon | img_url: '40x'}} 2x"
+                     {% else %}src="{{ _cart_icon | img_url: '20x'}}"{% endif %}
+                     alt="Cart" />
+
+              {% endif %}
+
+              <span class="number"><span class="n-item">{{ cart.item_count }}</span></span>
+            </a>
+
+          {% endif %}
+
+        </div>
+      </li>
+    {% endunless %}
+
+  </ul>
+</div>

@@ -1,0 +1,47 @@
+<div class="block-banner subcollections-three-banners">
+  <div class="row">
+
+    {% for block in section.blocks %}
+      {% if block.type == 'image' %}
+
+        {%- assign _full_width = block.settings.width -%}
+        {%- assign _image = block.settings.image -%}
+
+        {% if _full_width %}
+          {%- assign _class = 'col-md-12 remove-pad-col full-width' -%}
+          {%- assign _image_size = '1170x' -%}
+        {% else %}
+          {%- assign _class = 'col-md-6 remove-pad-col half-width' -%}
+          {%- assign _image_size = '585x' -%}
+        {% endif %}
+
+        {% unless _image == blank %}
+          {%- assign _heading = block.settings.heading -%}
+          {%- assign _subheading = block.settings.subheading -%}
+          {%- assign _button_label = block.settings.button_label -%}
+          {%- assign _button_link = block.settings.button_link -%}
+
+          {%- assign _heading_color = block.settings.heading_color -%}
+          {%- assign _subheading_color = block.settings.subheading_color -%}
+          {%- assign _button_color = block.settings.button_color -%}
+          {%- assign _button_bg_color = block.settings.button_bg_color -%}
+
+          <div class="{{ _class }}">
+            <div class="banner">
+              <div class="banner-image">
+                {% include 'image-lazysize' with image: _image, image_size: _image_size, image_class: '', image_alt: 'Banner' %} 
+              </div>
+              <div class="banner-content">
+                {% unless _subheading == blank %}<p style="color:{{ _subheading_color }};">{{ _subheading }}</p>{% endunless %}
+                {% unless _heading == blank %}<h3 style="color:{{ _heading_color }};">{{ _heading }}</h3>{% endunless %}
+                {% unless _button_label == blank %}<a href="{{ button_link }}" class="btn btn-banner" style="color:{{ _button_color }}; background:{{ _button_bg_color }};">{{ _button_label }}</a>{% endunless %}
+              </div>
+            </div>
+          </div>
+        {% endunless %}
+
+      {% endif %}
+    {% endfor %}
+    
+  </div>
+</div>

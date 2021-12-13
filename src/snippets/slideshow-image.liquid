@@ -1,0 +1,48 @@
+{%- assign _image = block.settings.image -%}
+{%- assign _image_mobile = block.settings.mobile_image -%}
+
+{% unless _image == blank %}
+
+  <div class="swiper-slide swiper-slide-{{ block.id }}">
+    <a href="{{ link }}">
+      {% include 'image-slideshow-lazysize' with image:_image_mobile, image_class: 'img-mobile', image_size: '1080x' %}
+      {% include 'image-slideshow-lazysize' with image:_image, image_class: 'img-desk', image_size: '1920x' %}
+    </a>
+
+    <div class="swiper-content {{ textAlign }} slide-{{ forloop.index }} container">
+      {% if _has_text %}
+
+        <div class="container-box{% if textBoxBackground == blank or textBoxBackground == 'none' or textBoxBackground == 'rgba(0,0,0,0)' %} bg-color-none{% endif %}" style="position: absolute; top: {{ position }}%; left: {{ horizontal_position }}%;transform: translate(-{{ horizontal_position }}%, -{{ position }}%);">
+
+          {% unless headingText == blank %}<div class="heading bold-{{ headingBoldText }}">{{ headingText }}</div>{% endunless %}
+          {% unless subheadingText == blank %}<div class="subheading bold-{{ subheadingBoldText }}">{{ subheadingText }}</div>{% endunless %}
+          {% unless captionText == blank %}<div class="cation bold-{{ captionBoldText }}">{{ captionText }}</div>{% endunless %}
+
+          {% unless buttonText == blank and buttonTextSecondary == blank %}
+            <div class="caption-link">
+              {% unless buttonText == blank  %}
+                <a class="slider-button btn" href="{{ link }}">{{ buttonText }}</a>
+              {% endunless %}
+
+              {% unless buttonTextSecondary == blank  %}
+                <a class="slider-button btn btn-secondary" href="{{ link_2 }}">{{ buttonTextSecondary }}</a>
+              {% endunless %}
+            </div>
+          {% endunless %}
+
+          {% include 'slideshow-css' %}
+
+        </div>
+
+      {% endif %}
+    </div>
+
+  </div>
+
+{% else %}
+
+  <div class="swiper-slide no-image">
+    <a href="{{ link }}">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</a>
+  </div>
+
+{% endunless %}

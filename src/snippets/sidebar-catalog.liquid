@@ -1,0 +1,70 @@
+<div id="sidebar" class="left-column-container {{ _sb_class }}">
+  
+  {% assign _sb_filters_style = section.settings.sb_filters_style %}
+  
+  {% if _sb_filters_position == 'sidebar' %}
+    <div class="f-close d-lg-none" title="Close"><i class="demo-icon icon-close"></i></div>
+  {% endif %}
+  
+  {% if _sb_filters == 'tags' %}
+    <div class="sb-widget filter-sidebar position-sidebar style-{{ _sb_filters_style }}">
+      <div class="sb-filter-wrapper">
+        {% include 'filter-tags' %}
+      </div>
+    </div>
+  {% endif %}
+  
+  {% for block in section.blocks %}
+    {% case block.type %}
+  
+      {% when 'collections' %}
+        {% include 'list-collections-sidebar' %}
+
+      {% when 'logo' %}
+        <div class="sb-widget sb-logo-list d-none d-lg-block">
+          <div class="sb-widget-content">
+
+            {%- assign _show_all_btn = block.settings.show_all_btn -%}
+            {%- assign _show_all_link = block.settings.show_all_link -%}
+            {%- assign _show_all_btn_alignment = block.settings.show_all_btn_alignment -%}
+            {%- assign _heading = block.settings.heading -%}
+            {%- assign _show_border_right = block.settings.show_border_right -%}
+
+            {% unless _heading == blank %}<h5 class="sb-title">{{ _heading }}</h5>{% endunless %}
+
+            <ul class="list{% if _show_border_right %} list-right-border{% endif %}">
+              {% for i in (1..8) %}
+                {%- assign _image = 'image_' | append: i -%}
+
+                {% unless block.settings[_image] == blank %}
+                  <li><img {% if _lazyload %}class="lazyload" data-{% endif %}src = "{{ block.settings[_image] | img_url: '150x'  }}" alt="Icon" /></li>
+                {% endunless %}
+
+              {% endfor %}
+            </ul>
+
+            {% if _show_all_btn %}
+              <div class="show-all-btn{% if _show_all_btn_alignment %} text-center{% endif %}">
+                <a class="btn btn-3" href="{{ _show_all_link }}">{{ 'general.text.view_all' | t }}</a>
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+  
+      {% when 'filter' %}
+        {% if _sb_filters_position == 'sidebar' and _sb_filters == 'groups' %}
+          {% include 'filter-sidebar' %}
+        {% endif %}
+  
+      {% when 'banner' %}
+        {% include 'banner-sidebar' %}
+  
+      {% when 'products-listing' %}
+        {%- assign _show_all_btn = false -%}
+        {% include 'products-listing-sidebar' %}
+  
+      {% endcase %}
+  {% endfor %}
+  
+</div>
