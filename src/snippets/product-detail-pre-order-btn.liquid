@@ -1,0 +1,7 @@
+{% if section.settings.enable_pre_order_button %}
+  <a class="pre-order" href="#pre-order-popup" class="btn-pre-order btn btn-1">
+  	<i class="demo-icon icon-mail-alt"></i>
+  	<span>{{ 'products.product.ask_product' | t }}</span>
+  </a>
+  <div class="pre-order-success hide">{{ 'products.product.ask_product_alert' | t }}</div> 
+{% endif %}

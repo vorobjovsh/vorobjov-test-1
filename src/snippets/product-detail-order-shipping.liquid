@@ -1,0 +1,12 @@
+{% if section.settings.order_shipping_time %}
+  <ul class="shipping-time" data-deliverytime="{{ section.settings.delivery_time }}" data-deadline="{{ section.settings.deadline_day }}">
+
+    <li class="delivery-time"></li>
+
+    <li class="deadline">
+      <span class="text">{{ 'products.product.order_within' | t }}</span>
+      <div class="countdown_deadline"></div>
+    </li>  
+
+  </ul>
+{% endif %}

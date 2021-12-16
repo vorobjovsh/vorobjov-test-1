@@ -1,0 +1,12 @@
+{% unless settings.product_review_option == 'none' %}
+  {% if settings.product_review_option == 'shopify-review' %}
+    <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+  {% elsif settings.product_review_option == 'loox' %}
+    <div id="looxReviews" data-product-id="{{product.id}}">{{ product.metafields.loox.reviews }}</div>
+  {% else %}
+    {% capture the_snippet_reviews %}{% render 'socialshopwave-widget-recommends' with 1 %}{% endcapture %}
+    {% unless the_snippet_reviews contains 'Liquid error' %}
+    {{ the_snippet_reviews }}
+    {% endunless %}
+  {% endif %}
+{% endunless %}

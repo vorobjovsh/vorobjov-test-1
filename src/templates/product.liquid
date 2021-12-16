@@ -1,0 +1,33 @@
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% assign _template = settings.product_template_default %}
+
+{% case _template  %}
+	{% when 'default' %}
+		{% section 'product-template' %}
+	{% when '2' %}
+    	{% section 'product-template-v2' %}
+  {% when '3' %}
+    	{% section 'product-template-v3' %}
+	{% when '4' %}
+		{% section 'product-template-v4' %}
+  {% when '5' %}
+   		{% section 'product-template-v5' %}
+  {% when '6' %}
+    	{% section 'product-template-v6' %}
+  {% when '7' %}
+    	{% section 'product-template-v7' %}
+  {% when '8' %}
+      {% section 'product-template-v8' %}
+  {% when 'bundle' %}
+    	{% section 'product-bundle-template' %}
+  {% else %}
+    	{% section 'product-redirect-template' %}
+{% endcase %}
+
+{% if settings.ss_product_tab_subpage %}{% section 'section-products-tabs' %}{% endif %}
+{% if settings.ss_instagram_subpage %}{% section 'section-instagram' %}{% endif %}
+{% if settings.ss_newsletter_subpage %}{% section 'section-newsletter' %}{% endif %}
+{% if settings.ss_logo_list_subpage %}{% section 'section-partner' %}{% endif %}

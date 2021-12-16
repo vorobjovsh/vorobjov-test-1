@@ -1,0 +1,183 @@
+<script type="application/json" id="VariantJson-{{ section.id }}">
+  [
+    {% for variant in product.variants %}
+      {
+        "id":{{ variant.id | json }},
+         "incoming": {{ variant.incoming | default: false | json }},
+         "unformat_incoming_date": {{ variant.next_incoming_date | date:"%d/%m/%Y" | json }},
+         "next_incoming_date": {{ variant.next_incoming_date | date: format: 'month_day_year' | json }},
+         "inventory_policy": {{ variant.inventory_policy | json }},
+         "inventory_quantity": {{ variant.inventory_quantity | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+</script>
+
+<script type="text/javascript">
+  
+  	jQuery(document).ready(function($) {
+      {% unless template.suffix == 'redirect' %}AT_Main.stickAddToCart();{% endunless %}
+      AT_Main.deadLine_time();
+      AT_Main.delivery_time();
+      AT_Main.scrollToReview();
+      
+      jQuery('.panel-product-accordion .panel-title > a').on('click',function (e) {
+        $('.panel-product-accordion .panel-collapse').removeClass('show');
+        $(this).parents('.panel-product-accordion').first().find('.panel-collapse').addClass('show');
+      })
+    });
+
+	// initialize multi selector for product
+	$(window).on('load', function () {
+      
+        setTimeout(function(){
+          AT_Main.scareWidth();
+        }, 1000);
+      
+        $(".qty-inner .qty-up").on("click", function() {
+			var oldValue = $("#quantity").val(),
+				newVal = 1;
+				newVal = parseInt(oldValue) + 1;
+				$("#quantity").val(newVal);
+		});
+		$(".qty-inner .qty-down").on("click", function() {
+			var oldValue = $("#quantity").val();
+			if (oldValue > 1) {
+				newVal = 1;
+				newVal = parseInt(oldValue) - 1;
+				$("#quantity").val(newVal);
+			}
+		});
+
+		var variantProd = JSON.parse(jQuery('#VariantJson-{{ section.id }}').html());
+
+		/* selectCallback */
+		var selectOptionsCallback = function(variant, selector) {
+
+			if (variant) {
+				var form = jQuery('#' + selector.domIdPrefix).closest('form');
+				for (var i=0,length=variant.options.length; i<length; i++) {
+					var radioButton = form.find('.swatch[data-option-index="' + i + '"] :radio[value="' + variant.options[i] +'"]');
+					if (radioButton.length) {
+						radioButton.get(0).checked = true;
+					}
+				}
+			}    
+          
+			var add_to_cart = '#add-to-cart';
+			var $price = '#purchase-' + selector.product.id.toString() + ' .detail-price';
+
+			if (jQuery('#product-info.product-info').data('stock')) {
+	            if (variant) { 
+		            var variant_stock = variantProd.find(item => item.id === variant.id);
+
+		            if (variant.available) {
+		                $('.inventory-quantity').removeClass('hide'); 
+
+		                if(variant_stock.inventory_quantity > 0){
+		                	$('.inventory-quantity .text .number').html('<span class="number">' +  variant_stock.inventory_quantity + '</span>')
+		                	var _total_inventory_quantity = variant_stock.inventory_quantity + 5;
+		                }
+		            	else{
+		            		$('.inventory-quantity .text .number').html('<span class="number">5</span>')
+		            		var _total_inventory_quantity = 10;
+		            	}
+
+		                var _percent = (5/_total_inventory_quantity)*100;
+		                $('.inventory-quantity .line2').css('width', _percent + '%');
+		            }
+
+		            else{
+		                $('.inventory-quantity').addClass('hide'); 
+		            }
+		        }
+		    }
+
+			if (variant && variant.available) {
+              
+              	jQuery("#stock").html('<span>{{"products.product.available" | t }}:</span><span class="stock"> {{"products.product.in_stock" | t }}</span>');
+
+                // Update variant image
+				if (variant.featured_image) { 
+                  var originalImage = jQuery(".slider-for-00 .slick-current .image-zoom");
+                  var newImage = variant.featured_image;
+                  var element = originalImage[0];
+                  var groupImage  = String(variant.featured_image.alt);  
+                  
+                  AT_Main.productPage_variantFilter(groupImage == 'null' ? 'none-group' : groupImage);
+                  
+				  Shopify.Image.switchImage(newImage, element, function (newImageSizedSrc, newImage, element) {
+					jQuery('.slider-thumbs-00 img').each(function() {
+					  var grandSize = jQuery(this).attr('src');
+					  grandSize = grandSize.replace('small','2048x2048');
+					  if (grandSize == newImageSizedSrc) {
+						jQuery(this).parent().trigger('click');  
+                        
+                        let w_thumb = jQuery('.slider-thumbs-00').outerWidth()
+                        ,w_track = jQuery('.slider-thumbs-00 .slick-track').outerWidth();
+                        if ((w_track <= w_thumb || AT_Main.getWidthBrowser() < 768)) {
+                          jQuery('.slider-thumbs-00 .slick-track').addClass('no-translate3d');
+                        }else{
+                          jQuery('.slider-thumbs-00 .slick-track').removeClass('no-translate3d');
+                        }
+						return false;
+					  }
+					});
+				  });   
+				}
+
+				// selected a valid variant
+				$(add_to_cart).removeClass('disabled').removeAttr('disabled').html('<span class="demo-icon icon-electro-add-to-cart-icon"></span>{{ "products.product.add_to_cart" | t }}'); // remove unavailable class from add-to-cart button, and re-enable button
+
+				if(variant.compare_at_price == null){
+					$($price).html('<span class="price">'+Shopify.formatMoney(variant.price, '{{shop.money_format}}')+'</span>');
+                    jQuery(".brand-label .label-sale").addClass('hide');
+				}
+			  
+				else {
+					$($price).html('<del class="price-compare">'+Shopify.formatMoney(variant.compare_at_price, '{{shop.money_format}}') + '</del>' + '<span class="price-sale">' + Shopify.formatMoney(variant.price, '{{shop.money_format}}') + '</span>');
+                    jQuery(".brand-label .label-sale").removeClass('hide');
+				}
+                                                 
+                {% if section.settings.enable_pre_order_button %}
+                  $('.shopify-payment-button').removeClass('hide');
+                {% endif %}
+                            
+                /* Update currency */
+                {% if settings.currency_type == '2' %}
+                  currenciesCallbackSpecial('#product-info span.money');
+				{% endif %}
+			} 
+			else {
+                jQuery("#stock").html('<span>{{"products.product.available" | t }}:</span><span class="stock"> {{"products.product.out_stock" | t }}</span>');
+				$(add_to_cart).addClass('disabled').attr('disabled', 'disabled'); // set add-to-cart button to unavailable class and disable button
+				var message = variant ? "{{'products.product.sold_out' | t }}" : "{{'products.product.unavailable' | t }}";
+				$(add_to_cart).html(message);
+                
+                {% if section.settings.enable_pre_order_button %}
+                  $('.shopify-payment-button').addClass('hide');
+                {% endif %}
+			}
+                
+            {% if section.settings.show_product_sku %}
+				if (variant && variant.sku ) { jQuery("#sku").html(variant.sku).parent().show(); }
+				else{jQuery("#sku").parent().hide(); }
+			{% endif %}
+		};
+
+        {% if product.variants.size > 0 %}
+            new Shopify.OptionSelectors("product-select-{{ product.id }}", { product: {{ product | json | remove:'\u003E' | remove:'\u003C' | remove:'\u00a0' }}, onVariantSelected: selectOptionsCallback, enableHistoryState: true });
+        {% endif %}
+              
+		// Add label if only one product option
+		{% if product.options.size == 1 and product.options.first != 'Title' %}
+			$('.selector-wrapper:eq(0)').prepend('<label>{{ product.options.first | escape }}</label>');
+		{% endif %}
+												 
+		// Hide selectors if we only have 1 variant and its title contains 'Default'.
+		{% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+			$('.selector-wrapper').hide();
+		{% endif %}
+
+	});
+</script>

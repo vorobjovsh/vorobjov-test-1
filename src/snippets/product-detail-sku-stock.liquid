@@ -1,0 +1,9 @@
+{% assign _product_sku = section.settings.show_product_sku %}
+{% assign _product_availability = section.settings.show_product_availability %}
+
+{% if _product_sku or _product_availability %}
+  <ul class="product-sku-stock">
+    {% include 'product-detail-sku' %}
+    {% include 'product-detail-stock' %}
+  </ul>
+{% endif %}

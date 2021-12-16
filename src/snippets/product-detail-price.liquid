@@ -1,0 +1,13 @@
+<meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+<meta itemprop="priceValidUntil" content="2021-11-05" />
+
+<div id="purchase-{{ product.id }}" class="product-price">
+  <div class="detail-price" itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+    {% if product.compare_at_price_max > product.price %}
+    	<del class="price-compare"> {{ product.compare_at_price | money }}</del>
+    	<span class="price-sale">{{ product.price | money }}</span>
+    {% else %}
+      	<span class="price">{{ product.price | money }}</span>
+    {% endif %}
+  </div>
+</div>

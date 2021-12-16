@@ -1,0 +1,14 @@
+{% if settings.enable_product_compare %}
+{% render 'arn_wl_cp_custom_buttons', type: 'cp_add_btn', product_handle: product.handle %}
+{% endif %}
+
+{% if settings.product_wishlist_option != 'disable' %}
+  {% if settings.product_wishlist_option == 'wishlist-compare' %} 
+    {% render 'arn_wl_cp_custom_buttons', type: 'wl_add_btn', product_handle: product.handle %}
+  {% else %}
+    {% capture the_snippet_fave %}{% render 'socialshopwave-widget-fave' %}{% endcapture %}
+    {% unless the_snippet_fave contains 'Liquid error' %}
+    {{ the_snippet_fave }}
+    {% endunless %}   
+  {% endif %}
+{% endif %}

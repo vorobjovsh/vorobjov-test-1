@@ -1,0 +1,30 @@
+{% if settings.use_quick_view or settings.product_wishlist_option != 'disable' or settings.enable_product_compare %}
+  <div class="product-button">
+
+      {% if settings.enable_product_compare %}
+        <div class="product-compare">
+          {% render 'arn_wl_cp_custom_buttons', type: 'cp_add_btn', product_handle: product.handle %}
+        </div>
+      {% endif %}
+
+      {% if settings.product_wishlist_option != 'disable' %} 
+        <div class="product-wishlist">
+          {% if settings.product_wishlist_option == 'wishlist-compare' %} 
+            {% render 'arn_wl_cp_custom_buttons', type: 'wl_add_btn', product_handle: product.handle %}
+          {% else %}
+            {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+            {% unless the_snippet_fave_icon contains 'Liquid error' %}
+            {{ the_snippet_fave_icon }}
+            {% endunless %}  
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if settings.use_quick_view %}
+        <div data-target="#quick-shop-popup" class="quick_shop" data-handle="{{ product.handle }}" data-toggle="modal" title="{{ 'products.product.quick_shop' | t }}">
+          <i class="demo-icon {{ settings.qw_font_icon }}"></i>
+        </div>
+      {% endif %}
+
+  </div>
+{% endif %}

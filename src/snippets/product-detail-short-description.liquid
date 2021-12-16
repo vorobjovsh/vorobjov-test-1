@@ -1,0 +1,8 @@
+{% if section.settings.meta_description_excerpt %}
+  {% assign meta_shortdes = product.metafields.c_f %}
+  {% assign key = 'description_excerpt' %}
+
+  {% unless meta_shortdes.description_excerpt == blank %}
+    <div class="short-description">{{ meta_shortdes.description_excerpt }}</div>
+  {% endunless %}
+{% endif %}

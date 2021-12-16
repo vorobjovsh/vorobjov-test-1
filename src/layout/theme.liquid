@@ -13,11 +13,11 @@
 
    <link rel="preload" href="{{'header-footer.scss' | asset_url }}" as="style">
    <link rel="preload" href="{{'vendor.css' | asset_url }}" as="style">
-   <link rel="preload" href="{{'global.scss' | asset_url }}" as="style">
+   <link rel="preload" href="{{'global.css' | asset_url }}" as="style">
   {% if template == 'index' %}
    <link rel="preload" href="{{'themes.scss' | asset_url }}" as="style" >
   {% else %}
-   <link rel="preload" href="{{'styles.scss' | asset_url }}" as="style">
+   <link rel="preload" href="{{'styles.css' | asset_url }}" as="style">
   {% endif %}
 
    <link rel="preload" href="{{'arenafont.css' | asset_url }}" as="style">
@@ -33,11 +33,11 @@
 
   <link href="{{ 'vendor.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
   <link href="{{ 'header-footer.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all">
-  {% comment %} <link href="{{ 'global.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all"> {% endcomment %}
+  <link href="{{ 'global.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
   {% if template == 'index' %}
-  <link href="{{ 'themes.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+  <link href="{{ 'themes.scss.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
   {% else %}
-  <link href="{{ 'styles.scss' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+  <link href="{{ 'styles.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
   {% endif %}
 
   {{ 'main.build.css' | asset_url | stylesheet_tag }}

@@ -1,0 +1,47 @@
+{% assign _size_chart = false %}
+{% assign _shipping_return_page = false %}
+
+{% if section.settings.meta_size_chart %}
+  {% assign meta_sizechart = product.metafields.c_f %}
+  {% assign key = 'image_size_chart' %}
+
+  {% unless meta_sizechart.image_size_chart == blank %}
+    {% assign _size_chart = true %}
+  {% endunless %}
+{% endif %}
+
+{% unless section.settings.shipping_return_page == blank %}
+  {% assign _shipping_return_page = true %}
+{% endunless %}
+
+{% if _size_chart or _shipping_return_page %}
+  <div class="product-popup-buttons">
+
+    {% if _size_chart %}
+      <a class="size-chart" href="#size-chart-popup">{{ 'products.product.size_chart' | t }}</a>
+    {% endif %}
+
+    {% if _shipping_return_page %}
+      <a class="shipping-return" href="#shipping-return-popup">{{ 'products.product.shipping' | t }}</a>
+    {% endif %}
+
+  </div>
+{% endif %}
+
+{% if _size_chart %}
+  <div id="size-chart-popup" style="display: none;"><img src= "{{ meta_sizechart.image_size_chart | split: 'https:' }}" alt="" /></div>
+{% endif %}
+
+{% if _shipping_return_page %}
+  <div id="shipping-return-popup" style="display: none;">
+    <h4 class="fan-modal-title">{{ pages[section.settings.shipping_return_page].title }}</h4>
+    <div class="fan-modal-content">{{ pages[section.settings.shipping_return_page].content }}</div>
+  </div>
+{% endif %}
+
+<script>
+  jQuery(document).ready(function($) {   
+    $("a.size-chart").fancybox();
+    $("a.shipping-return").fancybox();
+  });
+</script>

@@ -1,0 +1,8 @@
+{% assign _variant_quantity = product.variants.first.inventory_quantity %}
+<div class="inventory-quantity hide">
+	<div class="text">
+		<span>{{ 'products.product.remaining_quantity_message_1' | t }}</span>
+		<span>{{ 'products.product.remaining_quantity_message_2' | t }} <span class="number">{{ _variant_quantity }}</span> {{ 'products.product.remaining_quantity_message_3' | t }}</span>
+	</div>
+	<div class="line"><div class="line2"></div></div>
+</div>

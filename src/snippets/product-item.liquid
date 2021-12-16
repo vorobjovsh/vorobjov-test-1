@@ -28,17 +28,17 @@
       </div>
 
       {% unless _left_meta_countdown_timer %}{% include 'product-item-countdown' %}{% endunless %}
-      {% include 'product-button' %}  
+      {% include 'product-button' %}
     </div>
 
     {% unless settings.hide_add_cart %}
       <div class="product-add-cart">
         {% unless product.template_suffix == 'redirect' %}
-        
+
           {% if settings.disable_ajax_cart %}
             <a href="{{ product.url | within: collection }}" class="btn-add-cart select-options" title="{{ 'products.product.select_options' | t }}"><span class="demo-icon icon-right"></span><span class="text">{{ 'products.product.select_options' | t }}</span></a>
 
-          {% else %} 
+          {% else %}
             {% if product.variants.size > 1 %}
               <a href="{{ product.url | within: collection }}" class="btn-add-cart select-options" title="{{ 'products.product.select_options' | t }}"><span class="demo-icon icon-right"></span><span class="text">{{ 'products.product.select_options' | t }}</span></a>
               <select class="d-none" name="id">
@@ -46,7 +46,7 @@
                   <option value="{{ variant.id }}">{{ variant.title | escape }}</option>
                 {% endfor %}
               </select>
-        
+
             {% else %}
               {% if product.available %}
                 <form action="/cart/add" method="post" enctype="multipart/form-data">
@@ -77,7 +77,7 @@
           {% endunless %}
 
         {% endunless %}
-          
+
       </div>
     {% endunless %}
   </div>
@@ -98,10 +98,10 @@
         <h5 class="product-name balance-{{ settings.enable_title_balance }}"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h5>
         {% if settings.product_review == 'above' %}{% include 'product-grid-review' %}{% endif %}
       </div>
-      
+
       {% include 'product-price' %}
 
-      {% if settings.product_review == 'below' %}{% include 'product-grid-review' %}{% endif %}  
+      {% if settings.product_review == 'below' %}{% include 'product-grid-review' %}{% endif %}
 
       <div class="product-list-mode-content">
 
@@ -134,16 +134,16 @@
                 {% render 'arn_wl_cp_custom_buttons', type: 'cp_add_btn', product_handle: product.handle %}
               </div>
             {% endif %}
-            
-            {% if settings.product_wishlist_option != 'disable' %} 
+
+            {% if settings.product_wishlist_option != 'disable' %}
             <div class="plm-product-wishlist">
-              {% if settings.product_wishlist_option == 'wishlist-compare' %} 
+              {% if settings.product_wishlist_option == 'wishlist-compare' %}
               {% render 'arn_wl_cp_custom_buttons', type: 'wl_add_btn', product_handle: product.handle %}
               {% else %}
               {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
               {% unless the_snippet_fave_icon contains 'Liquid error' %}
               {{ the_snippet_fave_icon }}
-              {% endunless %}  
+              {% endunless %}
               {% endif %}
             </div>
             {% endif %}
@@ -159,16 +159,16 @@
 
         {% if settings.product_wishlist_option != 'disable' or settings.enable_product_compare %}
           <div class="plm-button">
-            {% if settings.product_wishlist_option == 'wishlist-compare' %} 
+            {% if settings.product_wishlist_option == 'wishlist-compare' %}
             {% render 'arn_wl_cp_custom_buttons', type: 'wl_add_btn', product_handle: product.handle %}
             {% else %}
             {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
             {% unless the_snippet_fave_icon contains 'Liquid error' %}
             {{ the_snippet_fave_icon }}
-            {% endunless %}  
+            {% endunless %}
             {% endif %}
           </div>
-        {% endif %} 
+        {% endif %}
 
       </div>
 

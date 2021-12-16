@@ -1,0 +1,64 @@
+{% assign _have_label = false %}
+
+{% if settings.enable_new_label or settings.saleoff_label != 'none' or settings.enable_hot_label or product.available == false %}
+  {% for tag in product.tags %}
+    {% if t contains 'label new' or t contains 'label hot' or product.variants.first.compare_at_price %}
+      {% assign _have_label = true %}
+    {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if _have_label %}
+  <span class="product-label{% if settings.flex_product_label %} flex{% endif %}{% if settings.round_product_label %} round{% endif %}">
+
+    {% if product.available %}
+      {% if settings.enable_new_label %}
+        {% for tag in product.tags %}
+          {% capture t %}{{ tag | downcase }}{% endcapture %}
+
+          {% if t contains 'label new' %}
+            <span class="label-new">
+              <span class="new-text">{{ 'products.label.new' | t }}</span>
+            </span>
+          {% endif %}
+
+        {% endfor %}
+      {% endif %}
+
+      {% if settings.enable_hot_label %}
+        {% for tag in product.tags %}
+          {% capture t %}{{ tag | downcase }}{% endcapture %}
+
+          {% if t contains 'label hot' %}
+            <span class="label-hot">
+              <span class="hot-text">{{ 'products.label.hot' | t }}</span>
+            </span>
+          {% endif %}
+
+        {% endfor %}
+      {% endif %}
+
+      {% unless settings.saleoff_label == 'none' %}
+        {% if product.variants.first.compare_at_price and product.variants.first.price < product.variants.first.compare_at_price %}
+          <span class="label-sale">
+            {% if settings.saleoff_label == 'text' %}
+              <span class="sale-text">{{ 'products.label.sale' | t }}</span>
+            {% else %}
+              {% assign _discount_price = product.variants.first.compare_at_price | minus: product.variants.first.price %}
+              {% assign _percent = _discount_price | times: 100 | divided_by: product.variants.first.compare_at_price %}
+              <span class="sale-text">-{{ _percent }}<sup>%</sup></span>
+            {% endif %}
+          </span>
+
+        {% endif %}
+      {% endunless %}
+
+    {% else %}
+      <span class="label-out-stock">
+        <span class="out-stock-text">{{ 'products.product.out_stock' | t }}</span>
+      </span>
+    {% endif %}
+
+  </span>
+{% endif %}

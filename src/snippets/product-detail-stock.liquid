@@ -1,0 +1,15 @@
+{% if _product_availability %}
+	{% if product.available %}
+	  <li id="stock">
+	    <span>{{"products.product.available" | t }}:</span>
+	    <span class="stock">{{"products.product.in_stock" | t }}</span>
+	  </li>
+
+	{% else %}
+	  <li id="stock">
+	    <span>{{"products.product.available" | t }}:</span>
+	    <span class="stock">{{"products.product.out_stock" | t }}</span>
+	  </li>
+
+	{% endif %}
+{% endif %}

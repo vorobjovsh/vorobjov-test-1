@@ -1,0 +1,17 @@
+{% if settings.show_discount_popup %}
+{% assign _meta_discount_percent = product.metafields.c_f %}
+{% assign _meta_discount_code = product.metafields.c_f %}
+{% assign key = 'discount_code' %}
+
+{% unless _meta_discount_code.discount_code == blank %}
+<div class="hide">
+  <a href="/discount/{{ _meta_discount_code.discount_code }}?redirect={{ product.url }}" class="btn-discount-code btn btn-1">
+    {% if _meta_discount_percent.discount_percent == blank %}
+    Get my 10% offer now
+    {% else %}
+    Get my {{ _meta_discount_percent.discount_percent }} offer now
+    {% endif %}
+  </a>
+</div>
+{% endunless %}
+{% endif %}

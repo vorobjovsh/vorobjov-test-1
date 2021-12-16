@@ -71,7 +71,7 @@
       </div>
     {% endif %}
 
-    <div class="bc-home-slideshow image-gallery-{{ _image_gallery_position }}" style="background-color: {{ _background_color }}; height: {{ section.settings.manually_height}}px;">
+    <div class="bc-home-slideshow image-gallery-{{ _image_gallery_position }}" style="background-color: {{ _background_color }}; height: {{ section.settings.manually_height}}">
       {% if section.blocks.size > 0 %}
 
         {% if _image_gallery_position == 'right' or _image_gallery_position == 'right-2' or _image_gallery_position == 'left' %}<div class="row">{% endif %}

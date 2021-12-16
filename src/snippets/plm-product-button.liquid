@@ -1,0 +1,18 @@
+{% if settings.enable_product_compare %}
+  <div class="plm-product-compare">
+    {% render 'arn_wl_cp_custom_buttons', type: 'cp_add_btn', product_handle: product.handle %}
+  </div>
+{% endif %}
+
+{% if settings.product_wishlist_option != 'disable' %} 
+<div class="plm-product-wishlist">
+  {% if settings.product_wishlist_option == 'wishlist-compare' %} 
+  {% render 'arn_wl_cp_custom_buttons', type: 'wl_add_btn', product_handle: product.handle %}
+  {% else %}
+  {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+  {% unless the_snippet_fave_icon contains 'Liquid error' %}
+  {{ the_snippet_fave_icon }}
+  {% endunless %}  
+  {% endif %}
+</div>
+{% endif %}

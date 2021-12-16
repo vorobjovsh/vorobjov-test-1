@@ -1,0 +1,150 @@
+{% unless settings.breadcrumb_styles == 'none' %}{% include 'breadcrumb' %}{% endunless %}
+
+<div itemscope itemtype="http://schema.org/Product">
+  <meta itemprop="image" content="https:{{ product.featured_image.src | product_img_url: 'grande' }}">
+  <span itemprop="name" class="hide">{{ product.title }}</span>
+  <meta itemprop="mpn" content="925872" />
+  <meta itemprop="brand" content="{{ product.vendor }}">
+  <meta itemprop="sku" content="{{ product.variants.first.sku }}">
+  <div itemprop="aggregateRating"
+    itemscope itemtype="http://schema.org/AggregateRating" style="display: none;">
+   Rated <span itemprop="ratingValue">3.5</span>/5
+   based on <span itemprop="reviewCount">11</span> customer reviews
+  </div>
+  <meta itemprop="description" content="{{ product.description | strip_html | truncate: 100 }}">
+  
+  {% assign _lazyload = settings.use_lazyload %}
+  {% assign _product_layout = 'normal' %}
+  {% assign _main_class = 'col-12' %}
+  
+  <div class="container">
+    <div id="col-main" class="page-product layout-{{ _product_layout }} slider-normal">
+      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+        
+        {% if product.available %}
+          <link itemprop="availability" href="https://schema.org/InStock" />
+        {% else %}
+          <link itemprop="availability" href="https://schema.org/OutOfStock" />
+        {% endif %}
+
+        <div class="product">
+          <div class="product-content-wrapper">
+            <div class="row">
+
+              <div class="col-lg-7 col-md-6 col-sm-12 col-12">
+                {% include 'product-detail-image' %}
+              </div>
+
+              <div class="col-lg-5 col-md-6 col-sm-12 col-12">
+                <div id="product-info" class="product-info" data-stock="{{ section.settings.show_product_quantity }}">
+                  <div class="product-info-inner">
+
+                    {% include 'product-detail-discount-popup' %}
+
+                    <div class="d-flex brand-label">
+                      {% if section.settings.show_product_vendor and product.vendor != blank %}
+                        <div class="product-vendor">{{ product.vendor | link_to_vendor }}</div>
+                      {% endif %} 
+
+                      {% include 'product-label' %}
+                    </div>
+
+                    <h1 itemprop="name" content="{{ product.title }}" class="page-heading">{{ product.title }}</h1>
+
+                    {% include 'product-detail-review' %}
+                    {% include 'product-detail-sku-stock' %}
+                    {% include 'product-detail-price' %}
+                    {% include 'product-detail-inventory' %}
+                    {% include 'product-detail-deals' %}  
+                    
+                    {% if product.available %}   
+
+                      {% assign hide_default_title = false %}
+                      {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+                        {% assign hide_default_title = true %}
+                      {% endif %}
+
+                      <div class="group-cw clearfix">
+                        {% form 'product', product, class:'product-form product-action variants' %}
+                          {% include 'product-detail-variants' %}
+                          <div class="qty-add-cart">
+                            {% include 'product-detail-qty' %}
+
+                            {% assign meta_redirect = product.metafields.c_f %}
+                            {% assign key = 'redirect_url' %}
+
+                            {% if meta_redirect.redirect_url != blank %}
+                              <div class="redirect-cart">
+                                <a target="_blank" rel="noopener" class="redirect-btn btn btn-1" href="{{ meta_redirect.redirect_url }}">{{ 'products.product.buy_this_item' | t }}</a> 
+                              </div>
+
+                            {% else %}
+                              <div class="action-button">
+                                <button id="add-to-cart" class="add-to-cart btn btn-1" type="button"><span class="demo-icon icon-electro-add-to-cart-icon"></span>{{ 'products.product.add_to_cart' | t }}</button> 
+                              </div>
+                            {% endif %} 
+                          </div>
+                        {% endform %}
+
+                        {% include 'layout-people-in-cart' %}
+                        {% include 'product-detail-order-shipping' %}
+                        {% include 'product-detail-pre-order-btn' %}
+                        {% include 'product-detail-wishlist-compare' %} 
+                      </div>
+
+                    {% else %}
+                      {% include 'product-detail-unavailable' %}
+
+                    {% endif %}
+
+                    {% include 'product-detail-short-description' %}
+                    {% include 'product-detail-popup' %} 
+                    {% include 'product-detail-pre-order' %}
+                    {% include 'product-secure-image' %}
+
+                    {% if settings.show_social_sharing_product and settings.share_js != blank %}
+                      {% include 'social-sharing' %}
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  {% include 'product-toggle' %}
+
+  {% if section.settings.product_tab_review == 'below' and settings.product_review_option != 'none' %}
+    <div class="review-item" id="tab_review_tabbed">
+      <div id="tab-review" class="container">
+        {% include 'product-detail-review-content' %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'related-product' %}
+        {% include 'related-product' %} 
+      {% when 'super-deals-product' %}
+        {% include 'super-deals-product' %} 
+      {% when 'article' %}
+        {% include 'category-top-article' %}
+      {% else %}
+    {% endcase %}
+  {% endfor %}
+  
+</div>
+
+{% if settings.enable_notify_product_page %}
+  {% include 'layout-notify' %}
+{% endif %}
+
+{% include 'product-template-script' %}

@@ -1,0 +1,11 @@
+<div class="plm-add-cart">
+  {% if product.available %}
+  	{% if product.variants.size > 1 %}
+  		<a href="{{ product.url | within: collection }}" class="btn-add-cart plm-add-to-cart" title="{{ 'products.product.select_options' | t }}"><span class="text">{{ 'products.product.select_options' | t }}</span></a>
+  	{% else %}
+    	<a href="javascript:void(0)" class="btn-add-cart plm-add-to-cart" title="{{ 'products.product.add_to_cart' | t }}"><span class="text">{{ 'products.product.add_to_cart' | t }}</span></a>
+    {% endif %}
+  {% else %}
+    <a href="javascript:void(0)" class="btn-add-cart sold-out" title="{{ 'products.product.out_stock' | t }}"><span>{{ 'products.product.out_stock' | t }}</span></a>
+  {% endif %}
+</div>

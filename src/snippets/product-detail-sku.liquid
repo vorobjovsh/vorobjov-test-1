@@ -1,0 +1,6 @@
+{% if _product_sku %}
+  <li class="product-code"{% if product.variants.first.sku == blank %} style="display:none;{% endif %}">
+    <span>{{ 'products.product.product_code' | t }}</span>
+    <span id="sku">{{ product.variants.first.sku }}</span>
+  </li>
+{% endif %}

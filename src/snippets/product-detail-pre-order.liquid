@@ -1,0 +1,53 @@
+{% if section.settings.enable_pre_order_button %}	
+  <div id="pre-order-popup" style="display: none;">
+
+    {% form 'contact' %}
+
+    <span class="alert-pre-order{% if form.posted_successfully? %} success{% endif %}"></span>
+
+    <div id="pre-order-form">
+
+      <h4>{{ 'products.product.ask_product_form_title' | t }}</h4>
+
+      <div class="form-group">
+        <label for="name">{{'contact.form.name' | t }}</label>
+        <input required type="text" id="name" class="form-control" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.first_name }} {{ customer.last_name }}{% endif %}" name="contact[name]">
+      </div>
+
+      <div class="form-group">
+        <label for="email">{{'contact.form.email' | t }}</label>
+        <input required="" type="email" id="email" class="form-control" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" name="contact[email]">
+      </div>
+
+      <div class="form-group d-none">
+        <label for="product_name">Product Name<span class="req">*</span></label>
+        <input readonly id="product_name" class="form-control" value="{{ product.title }}" name="contact[product_name]" />
+      </div>
+
+      <div class="form-group">
+        <label for="message">{{'contact.form.message' | t }}</label>
+        <textarea required="" id="message" class="form-control" name="contact[body]" rows="7"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-1">{{ 'contact.form.submit_button' | t }}</button>
+      </div>
+    </div>
+
+    {% endform %}
+  </div>
+
+  <script>
+    jQuery(document).ready(function($) {   
+      $("a.pre-order").fancybox({
+        'autoDimensions': false
+        ,'width'		: 650                  
+        ,'autoSize' 	: false
+      });
+
+      if($('.alert-pre-order').hasClass('success')){
+        $('.pre-order-success').removeClass('hide');
+      }
+    });
+  </script>
+{% endif %}

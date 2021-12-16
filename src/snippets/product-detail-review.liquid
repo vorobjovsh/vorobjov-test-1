@@ -1,0 +1,23 @@
+{% unless settings.product_review_option == 'none' %}
+  <div class="rating-links">
+    <div class="rating-inner">
+      {% if settings.product_review_option == 'shopify-review' %}
+        <div class="shopify-product-reviews-badge" data-id="{{ product.id }}"></div>
+      {% elsif settings.product_review_option == 'loox' %}
+        <div class="loox-rating" data-fetch data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+      {% else %}
+        {% capture the_snippet_review_avg %}{% render 'ssw-widget-avg-rate-profile' %}{% endcapture %}
+        {% unless the_snippet_review_avg contains 'Liquid error' %}
+        {{ the_snippet_review_avg }}
+        {% endunless %}  
+      {% endif %}
+    </div>
+    {% if settings.product_review_option == 'shopify-review' or settings.product_review_option == 'loox' %}
+      <a href="#tab_review">{{ 'products.product.add_your_review' | t }}</a>
+    {% endif %}
+  </div>
+{% endunless %}
+
+{% if product.available and settings.product_review_option == 'growave' %}
+<div class="ssw-html-widget ssw-reward-place-order" data-module="Reward" data-name="PlaceOrder" data-product_id="{{product.id}}"></div>
+{% endif %}

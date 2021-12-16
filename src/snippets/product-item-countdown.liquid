@@ -1,0 +1,30 @@
+{% if product.available and product.metafields.c_f.countdown_timer != blank %}
+  {% assign meta_shortdes = product.metafields.c_f %}
+  {% assign key = 'countdown_timer' %}
+
+  {% assign expire = meta_shortdes.countdown_timer %}
+  {% assign dueDate = expire | split: '/' %}
+
+  <div class="detail-deal">
+    <div class="wrapper-countdown">
+      <div class="countdown_{{ product.id }}"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    jQuery(document).ready(function($){
+
+      var currentDate = new Date();
+      var dueDate = new Date( {{ dueDate[2] }}, {{ dueDate[0] | plus:0 }} - 1, {{ dueDate[1] | plus:0 }} );
+
+      if(currentDate < dueDate){
+        $('.countdown_{{ product.id }}').countdown({until: dueDate, format: 'DHMS', layout: '<span class="countdown-row countdown-show4"><span class="countdown-section"><span class="countdown-amount">{dn}</span><span class="countdown-period">{dl}</span></span><span class="countdown-section"><span class="countdown-amount">{hn}</span><span class="countdown-period">{hl}</span></span><span class="countdown-section"><span class="countdown-amount">{mn}</span><span class="countdown-period">Min</span></span><span class="countdown-section"><span class="countdown-amount">{sn}</span><span class="countdown-period">Sec</span></span></span>', padZeroes: true });    
+      }
+      else{
+        $('.countdown_{{ product.id }}').parent().hide();
+      }
+
+    });
+  </script>
+
+{% endif %}

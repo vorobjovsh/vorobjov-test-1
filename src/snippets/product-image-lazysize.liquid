@@ -1,0 +1,41 @@
+{% if image_size == blank %}{% assign image_size = '585x' %}{% endif %}
+{% assign auto_crop = settings.collection_product_auto_crop %}
+
+{% if _lazyload %}
+  {% assign product_ratio = settings.collections_product_ratio %}
+  {% assign image_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+  {% assign image_ratio = image.aspect_ratio %}
+  {% assign image_width = '[180, 320, 540, 720, 1080, 1366, 1920, 2048]' %}
+
+  {%- assign imageRatio     = '' -%}
+  {%- assign imageRatio_css   = '' -%}
+  {%- assign customRatio   = settings.grid_sample_ratio -%}
+
+  {%- capture imageRatio -%}
+    {%- if product_ratio == 'false' or product_ratio == 'custom' -%} style="position:relative;padding-top:
+      {%- if product_ratio == 'false'  -%}{%- unless image == blank -%}{{- 1 | divided_by: image.aspect_ratio | times: 100 | append: '%' -}}{%- else -%}100%{%- endunless -%}"{%- endif -%}
+      {%- if product_ratio == 'custom' -%}{%- unless customRatio  == blank -%}{{- 1 | divided_by: customRatio.aspect_ratio | times: 100 | append: '%' -}}{%- else -%}100%{%- endunless -%}"{%- endif -%}
+    ;{%- endif -%}
+  {%- endcapture -%}
+
+  <span class="image-lazysize" {{ imageRatio }}>
+    <!-- noscript pattern -->
+    <noscript>
+      <img class="img-lazy product-ratio-{{ product_ratio }} {{ image_class }}" src="{{ image | img_url: image_size }}" alt="{{ image.alt }}"{% if product_ratio == 'false' %} style="object-fit: unset"{% endif %} />
+    </noscript>
+    
+    <img class="lazyload {{ image_class }} img-lazy blur-up auto-crop-{{ auto_crop }}"
+         data-src="{{ image_url }}"
+         data-widths="{{ image_width}} "
+         data-aspectratio="{{ image_ratio }}"
+         data-sizes="auto"
+         data-parent-fit="cover"
+         alt="{{ image.alt }}"
+         {% if product_ratio == 'false' %} style="object-fit: unset"{% endif %}
+         />
+  </span>
+
+{% else %}
+  <img class="auto-crop-{{ auto_crop }} {{ image_class }}" src="{{ image | img_url: image_size }}" alt="{{ image.alt }}" />
+
+{% endif %}

@@ -1,0 +1,17 @@
+{% unless section.settings.secure == blank %}
+  <div class="secure-image">
+  	{% assign _image = section.settings.secure %}
+  	{% assign _image_size = '450x' %}
+
+    <img {% if _lazyload %}class="lazyload" data-{% endif %}src="{{ _image | img_url: _image_size }}" alt="Secure" />
+  </div>
+{% endunless %}
+
+{% unless section.settings.payment == blank %}
+  <div class="payment-image">
+  	{% assign _image = section.settings.payment %}
+  	{% assign _image_size = '305x' %}
+
+    <img {% if _lazyload %}class="lazyload" data-{% endif %}src="{{ _image | img_url: _image_size }}" alt="Payment" />
+  </div>
+{% endunless %}
